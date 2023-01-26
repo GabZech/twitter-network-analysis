@@ -12,6 +12,7 @@ networkx = "*"
 plotly = "*"
 ipykernel = "*"
 nbformat = "*"
+pyarrow = "*"
 
 [dev-packages]
 
