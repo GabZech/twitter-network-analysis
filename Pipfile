@@ -13,6 +13,7 @@ plotly = "*"
 ipykernel = "*"
 nbformat = "*"
 pyarrow = "*"
+jupyter = "*"
 
 [dev-packages]
 
