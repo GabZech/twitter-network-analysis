@@ -18,7 +18,7 @@ On Linux:
 5. `/usr/local/bin/quarto check` - check is your Quarto installation was successful
 
 
-If you need any help, see (Quarto's installation instructions)[https://docs.posit.co/resources/install-quarto/#quarto-deb-file-install]
+If you need any help, see [Quarto's installation instructions](https://docs.posit.co/resources/install-quarto/#quarto-deb-file-install)
 
 ## Render Quarto website
 
