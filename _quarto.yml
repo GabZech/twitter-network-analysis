@@ -1,0 +1,28 @@
+project:
+    execute-dir: project
+    output-dir: docs/
+    type: website
+    render:
+        - src/analysis.qmd
+
+website:
+    title: "Twitter Network Analysis"
+
+format:
+    html:
+        theme: lumen
+        toc: true
+        toc-title: Contents
+        toc-location: left
+        fontsize: 11pt
+        page-layout: full
+        code-fold: True
+
+execute:
+    enabled: True
+    cache: False
+
+editor:
+    render-on-save: False
+
+jupyter: python3

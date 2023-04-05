@@ -130,3 +130,5 @@ dmypy.json
 
 # USER ADDITIONS
 data/raw/all_tweets_lehrkraeftebildung.parquet
+
+/.quarto/
