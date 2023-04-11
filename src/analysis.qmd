@@ -153,7 +153,7 @@ Now let's prepare the data and print some relevant information about it.
 ```{python}
 
 # load and clean dataset
-df = pd.read_parquet("data/raw/all_tweets_lehrkraeftebildung.parquet")
+df = pd.read_parquet("../data/raw/all_tweets_lehrkraeftebildung.parquet")
 df.replace(["NaN", "nan", "None", ""], np.NaN, inplace=True)
 df = extract_missing_usernames(df, "tweet_author_username")
 
@@ -178,4 +178,30 @@ print(f"\nKeywords* used to collect the retweets:\n{search_words}")
 print(f"\nQuery conditions used to collect the retweets:\n{query_conds}")
 print(f"\nNumber of retweets with missing usernames for the original tweeter: {missing_usernames}\nThese are being dropped from the analysis. New total of retweets: {len(df)}")
 
+```
+
+```{python}
+from graph_tool.all import *
+
+def get_adj_m(df):
+    adj = pd.crosstab(df['retweet_author_username'],
+    df['tweet_author_username'])
+    idx = adj.index.union(adj.columns)
+    adj = adj.reindex(index=idx, columns=idx, fill_value=0).to_numpy()
+
+    idx = adj.nonzero()
+    weights = adj[idx]
+    return idx, weights
+
+idx, weights = get_adj_m(df)
+
+g = Graph()
+g.add_edge_list(np.transpose(idx))
+ew = g.new_edge_property("int")
+ew.a = weights
+g.edge_properties["weight"] = ew
+```
+
+```{python}
+graph_draw(g)
 ```
