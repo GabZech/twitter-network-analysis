@@ -183,16 +183,19 @@ print(f"\nNumber of retweets with missing usernames for the original tweeter: {m
 Now let's prepare the graph.
 
 ```{python}
+import graph_tool.all as gt
+
 # prepare dataset for graph
 df_ = df.copy()
 df_["weight"] = df_.groupby(['retweet_author_username', 'tweet_author_username']).transform('size')
-df_ = df_[columns].drop_duplicates(subset=['retweet_author_username', 'tweet_author_username'])
 
 # choose columns to keep
 columns = ['retweet_author_username',
     'tweet_author_username',
     "weight",
     ]
+
+df_ = df_[columns].drop_duplicates(subset=['retweet_author_username', 'tweet_author_username'])
 
 # create list of edges
 g_list = [(r, t, w, r, t) for r, t, w in zip(df_.retweet_author_username, df_.tweet_author_username, df_.weight)]
@@ -212,7 +215,7 @@ g = gt.Graph(
 ### The network as a whole
 
 ```{python}
-gt.graph_draw(g, pos)
+gt.graph_draw(g)
 ```
 
 ### The largest component of the network
@@ -226,14 +229,12 @@ g = gt.Graph(g, prune=True)
 pos = gt.sfdp_layout(g, eweight=g.edge_properties["weight"])
 
 gt.graph_draw(g, pos)
-```
 
-## Statistics of the (sub)network
-
-```{python}
 # create mapping from usernames to vertex ids
 id_usernames = {v: g.vp.ids[v] for v in range(len(list(g.vp.ids)))}
 ```
+
+## Statistics of the (sub)network
 
 ### Degree distribution
 
@@ -282,13 +283,9 @@ In the case of retweets, it measures the **extent to which a user connects diffe
 vp, ep = gt.betweenness(g)
 
 gt.graph_draw(g, pos=pos, vertex_fill_color=vp,
-
-              vertex_size=gt.prop_to_size(vp, mi=5, ma=15),
-
+              vertex_size=gt.prop_to_size(vp, mi=1, ma=10),
               edge_pen_width=gt.prop_to_size(ep, mi=0.5, ma=5),
-
-              vcmap=plt.cm.gray,
-
+              vcmap=plt.cm.autumn,
               vorder=vp)
 
 ```
@@ -320,10 +317,10 @@ Calculate top edges by betweenness centrality
 dic = {i: ep.a[i] for i in range(g.num_edges())}
 dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20])}
 
+# get names of tweeters and retweeters
 lis = [(list(g.ep.tweeter)[k], list(g.ep.retweeter)[k], v) for k, v in dic.items()]
 
-#df_ = sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20]
-
+# prepare table
 df_ = pd.DataFrame(lis, columns=["Tweeter", "Retweeter", "Betweenness Score"])
 df_["(normalised)"] = df_["Betweenness Score"] / df_["Betweenness Score"].max()
 df_ = df_.round(5)

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.313">
+<meta name="generator" content="quarto-1.3.309">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -107,6 +107,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">Data preparation</a></li>
+  <li><a href="#visualising-the-network" id="toc-visualising-the-network" class="nav-link" data-scroll-target="#visualising-the-network">Visualising the network</a>
+  <ul class="collapse">
+  <li><a href="#the-network-as-a-whole" id="toc-the-network-as-a-whole" class="nav-link" data-scroll-target="#the-network-as-a-whole">The network as a whole</a></li>
+  <li><a href="#the-largest-component-of-the-network" id="toc-the-largest-component-of-the-network" class="nav-link" data-scroll-target="#the-largest-component-of-the-network">The largest component of the network</a></li>
+  </ul></li>
+  <li><a href="#statistics-of-the-subnetwork" id="toc-statistics-of-the-subnetwork" class="nav-link" data-scroll-target="#statistics-of-the-subnetwork">Statistics of the (sub)network</a>
+  <ul class="collapse">
+  <li><a href="#degree-distribution" id="toc-degree-distribution" class="nav-link" data-scroll-target="#degree-distribution">Degree distribution</a></li>
+  </ul></li>
+  <li><a href="#measures-of-centrality" id="toc-measures-of-centrality" class="nav-link" data-scroll-target="#measures-of-centrality">Measures of centrality</a>
+  <ul class="collapse">
+  <li><a href="#betweenness-centrality" id="toc-betweenness-centrality" class="nav-link" data-scroll-target="#betweenness-centrality">Betweenness centrality</a></li>
+  </ul></li>
   </ul>
 </nav>
 </nav>
@@ -281,7 +294,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Now let’s prepare the data and print some relevant information about it.</p>
+<p>Now let’s prepare the dataset and print some relevant information about it.</p>
 <div class="cell" data-execution_count="2">
 <details>
 <summary>Code</summary>
@@ -316,7 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 11027
 
 Time range of the retweets:
-Februar 23, 2023 - April  1, 2023
+February 23, 2023 - April  1, 2023
 
 Keywords* used to collect the retweets:
 (Lehrkräftebildung OR Lehrerbildung OR Lehrkräfte OR Lehrkräftefortbildung OR Seiteneinstieg OR Quereinstieg OR Lehramt)
@@ -328,155 +341,232 @@ Number of retweets with missing usernames for the original tweeter: 199
 These are being dropped from the analysis. New total of retweets: 10828</code></pre>
 </div>
 </div>
+<p>Now let’s prepare the graph.</p>
 <div class="cell" data-execution_count="3">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> graph_tool.<span class="bu">all</span> <span class="im">as</span> gt</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create adjacency matrix to import data into gt.Graph</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_adj_m(df):</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    adj <span class="op">=</span> pd.crosstab(df[<span class="st">'retweet_author_username'</span>],</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'tweet_author_username'</span>])</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> adj.index.union(adj.columns)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    adj_np <span class="op">=</span> adj.reindex(index<span class="op">=</span>idx, columns<span class="op">=</span>idx, fill_value<span class="op">=</span><span class="dv">0</span>).to_numpy()</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> adj_np.nonzero()</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> adj_np[idx]</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> idx, weights, adj</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare dataset for graph</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df.copy()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"weight"</span>] <span class="op">=</span> df_.groupby([<span class="st">'retweet_author_username'</span>, <span class="st">'tweet_author_username'</span>]).transform(<span class="st">'size'</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># choose columns to keep</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [<span class="st">'retweet_author_username'</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'tweet_author_username'</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weight"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    ]</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>idx, weights, adj <span class="op">=</span> get_adj_m(df)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_[columns].drop_duplicates(subset<span class="op">=</span>[<span class="st">'retweet_author_username'</span>, <span class="st">'tweet_author_username'</span>])</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph()</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>g.add_edge_list(np.transpose(idx))</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ew <span class="op">=</span> g.new_edge_property(<span class="st">"int"</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>ew.a <span class="op">=</span> weights</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>g.edge_properties[<span class="st">"weight"</span>] <span class="op">=</span> ew</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create list of edges</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>g_list <span class="op">=</span> [(r, t, w, r, t) <span class="cf">for</span> r, t, w <span class="kw">in</span> <span class="bu">zip</span>(df_.retweet_author_username, df_.tweet_author_username, df_.weight)]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># create graph</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    g_list,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    hashed<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    eprops<span class="op">=</span>[(<span class="st">'weight'</span>, <span class="st">'int'</span>), (<span class="st">'retweeter'</span>, <span class="st">'string'</span>), (<span class="st">'tweeter'</span>, <span class="st">'string'</span>)]</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</section>
+<section id="visualising-the-network" class="level2">
+<h2 class="anchored" data-anchor-id="visualising-the-network">Visualising the network</h2>
+<section id="the-network-as-a-whole" class="level3">
+<h3 class="anchored" data-anchor-id="the-network-as-a-whole">The network as a whole</h3>
 <div class="cell" data-execution_count="4">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>adj <span class="op">=</span> pd.crosstab(df[<span class="st">'retweet_author_username'</span>],</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'tweet_author_username'</span>])</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>g_list <span class="op">=</span> []</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>eprop <span class="op">=</span> g.new_edge_property(<span class="st">'int'</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>g.edge_properties[<span class="st">'weight'</span>] <span class="op">=</span> eprop</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> adj.index:</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> adj.columns:</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> adj.loc[i,j] <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            g_list.append(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                (i, j, adj.loc[i,j])</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="54">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f518c0e74f0, at 0x7f5151fc92d0&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="the-largest-component-of-the-network" class="level3">
+<h3 class="anchored" data-anchor-id="the-largest-component-of-the-network">The largest component of the network</h3>
+<p>If we look at the network as a whole, we can see that there are many isolated nodes on its periphery. If we remove those, this is what we get.</p>
 <div class="cell" data-execution_count="5">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># retweeter = df.retweet_author_username.unique()</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tweeter = df['tweet_author_username'].unique()</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># df1 = pd.DataFrame(retweeter, columns=['author'])</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># df1['tweeter'] = True</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># df2 = pd.DataFrame(tweeter, columns=['author'])</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># df2['tweeter'] = False</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># df_authors = pd.concat([df1, df2])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subgraph of largest component</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.extract_largest_component(g, directed<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph(g, prune<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> gt.sfdp_layout(g, eweight<span class="op">=</span>g.edge_properties[<span class="st">"weight"</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create mapping from usernames to vertex ids</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>id_usernames <span class="op">=</span> {v: g.vp.ids[v] <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp.ids)))}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
 </div>
+</div>
+</section>
+</section>
+<section id="statistics-of-the-subnetwork" class="level2">
+<h2 class="anchored" data-anchor-id="statistics-of-the-subnetwork">Statistics of the (sub)network</h2>
+<section id="degree-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="degree-distribution">Degree distribution</h3>
 <div class="cell" data-execution_count="6">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># g = gt.Graph()</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># vprop = g.new_vertex_property('string')</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># eprop = g.new_edge_property('int')</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># for i, row1 in df_authors[df_authors.tweeter == True].iterrows():</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     for j, row2 in df_authors[df_authors.tweeter == False].iterrows():</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#         weight = adj.loc[row1['author'], row2['author']]</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#         if weight == 0: continue</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#         g.add_vertex(i)</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#         g.add_vertex(j)</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#         g.add_edge(i, j, weight)</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#         vprop[i] = row1['author']</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#         vprop[j] = row2['author']</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># in &amp; out degree distribution</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>in_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"in"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>out_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"out"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> in_hist[<span class="dv">0</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(in_hist[<span class="dv">0</span>])</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.errorbar(in_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], in_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"in"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> out_hist[<span class="dv">0</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(out_hist[<span class="dv">0</span>])</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.errorbar(out_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], out_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"out"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">"log"</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.xscale(<span class="st">"log"</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$k$"</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"$NP(k_</span><span class="sc">{in}</span><span class="st">)$"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display" data-execution_count="56">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7f5155999cc0&gt;</code></pre>
 </div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-7-output-2.png" width="658" height="466"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="measures-of-centrality" class="level2">
+<h2 class="anchored" data-anchor-id="measures-of-centrality">Measures of centrality</h2>
+<section id="betweenness-centrality" class="level3">
+<h3 class="anchored" data-anchor-id="betweenness-centrality">Betweenness centrality</h3>
+<p>Betweeness centrality represents the number of all ‘shortest paths’ between nodes that pass through a specific node. In other words, it counts how often that node is part of a short connection. In the case of retweets, it measures the <strong>extent to which a user connects different communities of users</strong>.</p>
+<ul>
+<li>Useful when there is flux / information flow within network</li>
+<li>Helps predict and locate vulnerability of a network (i.e.&nbsp;if you remove a node with high betweeness)</li>
+<li>Problem: computationally expensive (as you need to calculate all shortest paths)</li>
+</ul>
 <div class="cell" data-execution_count="7">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    g_list, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    hashed<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    eprops<span class="op">=</span>[(<span class="st">'weight'</span>, <span class="st">'int'</span>)]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vp, ep <span class="op">=</span> gt.betweenness(g)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>vp,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>              vertex_size<span class="op">=</span>gt.prop_to_size(vp, mi<span class="op">=</span><span class="dv">1</span>, ma<span class="op">=</span><span class="dv">10</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              edge_pen_width<span class="op">=</span>gt.prop_to_size(ep, mi<span class="op">=</span><span class="fl">0.5</span>, ma<span class="op">=</span><span class="dv">5</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              vcmap<span class="op">=</span>plt.cm.autumn,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>              vorder<span class="op">=</span>vp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="57">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f5151fcb370, at 0x7f51c03113c0&gt;</code></pre>
+</div>
+</div>
+<p>Calculate top users betweenness centrality</p>
 <div class="cell" data-execution_count="8">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: vp.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_vertices())}</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, <span class="st">"Betweenness Score"</span>])</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> df_[<span class="st">"Betweenness Score"</span>] <span class="op">/</span> df_[<span class="st">"Betweenness Score"</span>].<span class="bu">max</span>()</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Username  Betweenness Score  (normalised)
+1     leseerlaubnis            0.00192       1.00000
+2      BentsCristin            0.00184       0.96216
+3          SicherEU            0.00180       0.94201
+4    EberhardSchlie            0.00165       0.86060
+5     Haselmaus2010            0.00152       0.79417
+6         Diggi_tal            0.00152       0.79140
+7      EINSBERGBLOG            0.00151       0.78866
+8       hav_hendrik            0.00126       0.65996
+9   JSchmitzLeipzig            0.00122       0.63908
+10      Herr_Nuxoll            0.00119       0.62275
+11            ciffi            0.00115       0.60136
+12    risikogruppen            0.00085       0.44283
+13     sdw_Stiftung            0.00081       0.42026
+14   HSE_Heidelberg            0.00080       0.41651
+15  zumWeitertragen            0.00072       0.37458
+16           SenBJF            0.00068       0.35302
+17    PartnerSchule            0.00059       0.30768
+18      DianaKnodel            0.00053       0.27429
+19         Woe_Real            0.00050       0.26349
+20       BerlinSoul            0.00046       0.23835</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="23">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f56aeb84790, at 0x7f56ae744730&gt;</code></pre>
 </div>
-</div>
+<p>Calculate top edges by betweenness centrality</p>
 <div class="cell" data-execution_count="9">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># in &amp; out degree distribution</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>in_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"in"</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>out_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"out"</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> in_hist[<span class="dv">0</span>]</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(in_hist[<span class="dv">0</span>])</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>plt.errorbar(in_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], in_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"in"</span>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> out_hist[<span class="dv">0</span>]</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(out_hist[<span class="dv">0</span>])</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>plt.errorbar(out_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], out_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"out"</span>)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">"log"</span>)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>plt.xscale(<span class="st">"log"</span>)</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$k$"</span>)</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"$NP(k_</span><span class="sc">{in}</span><span class="st">)$"</span>)</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: ep.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_edges())}</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get names of tweeters and retweeters</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>lis <span class="op">=</span> [(<span class="bu">list</span>(g.ep.tweeter)[k], <span class="bu">list</span>(g.ep.retweeter)[k], v) <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(lis, columns<span class="op">=</span>[<span class="st">"Tweeter"</span>, <span class="st">"Retweeter"</span>, <span class="st">"Betweenness Score"</span>])</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> df_[<span class="st">"Betweenness Score"</span>] <span class="op">/</span> df_[<span class="st">"Betweenness Score"</span>].<span class="bu">max</span>()</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="24">
-<pre><code>&lt;matplotlib.legend.Legend at 0x7f56ab8fb070&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-10-output-2.png" width="658" height="466"></p>
-</div>
-</div>
-<div class="cell" data-execution_count="10">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subgraph of largest component</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> gt.extract_largest_component(g, directed<span class="op">=</span><span class="va">False</span>) <span class="co"># this appears to be the wrong way to do this, because the subgraph is very small. Maybe it only selects a subgraph which is connected by in and out edges?</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> gt.Graph(u, prune<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> gt.sfdp_layout(u, eweight<span class="op">=</span>u.edge_properties[<span class="st">"weight"</span>])</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(u, pos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="25">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f56a216db10, at 0x7f56aeb74e80&gt;</code></pre>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Tweeter        Retweeter  Betweenness Score  (normalised)
+1          SicherEU     BentsCristin            0.00172       1.00000
+2      BentsCristin   EberhardSchlie            0.00165       0.96337
+3    EberhardSchlie    leseerlaubnis            0.00157       0.91803
+4     Haselmaus2010        Diggi_tal            0.00152       0.88464
+5      EINSBERGBLOG    Haselmaus2010            0.00149       0.86772
+6       Herr_Nuxoll      hav_hendrik            0.00121       0.70300
+7       hav_hendrik  JSchmitzLeipzig            0.00118       0.68927
+8             ciffi      Herr_Nuxoll            0.00115       0.67047
+9   JSchmitzLeipzig     EINSBERGBLOG            0.00097       0.56556
+10        Diggi_tal    risikogruppen            0.00081       0.47287
+11   HSE_Heidelberg     sdw_Stiftung            0.00081       0.46975
+12    risikogruppen         SicherEU            0.00075       0.43932
+13  zumWeitertragen         SicherEU            0.00072       0.42075
+14        Diggi_tal  zumWeitertragen            0.00072       0.42007
+15    PartnerSchule           SenBJF            0.00061       0.35491
+16     sdw_Stiftung    PartnerSchule            0.00059       0.34380
+17         Woe_Real            ciffi            0.00052       0.30579
+18           SenBJF     EINSBERGBLOG            0.00052       0.30050
+19  StaackSebastian  dreadlock_dread            0.00039       0.22800
+20       BerlinSoul   regina_kittler            0.00038       0.22337</code></pre>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
