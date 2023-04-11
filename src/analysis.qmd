@@ -181,8 +181,8 @@ print(f"\nNumber of retweets with missing usernames for the original tweeter: {m
 ```
 
 ```{python}
-from graph_tool.all import *
-
+import graph_tool.all as gt
+# create adjacency matrix to import data into gt.Graph
 def get_adj_m(df):
     adj = pd.crosstab(df['retweet_author_username'],
     df['tweet_author_username'])
@@ -191,11 +191,11 @@ def get_adj_m(df):
 
     idx = adj.nonzero()
     weights = adj[idx]
-    return idx, weights
+    return idx, weights, adj
 
-idx, weights = get_adj_m(df)
+idx, weights, _ = get_adj_m(df)
 
-g = Graph()
+g = gt.Graph()
 g.add_edge_list(np.transpose(idx))
 ew = g.new_edge_property("int")
 ew.a = weights
@@ -203,5 +203,42 @@ g.edge_properties["weight"] = ew
 ```
 
 ```{python}
-graph_draw(g)
+gt.graph_draw(g)
+```
+
+```{python}
+import matplotlib.pyplot as plt
+
+# in & out degree distribution
+
+in_hist = gt.vertex_hist(g, "in")
+out_hist = gt.vertex_hist(g, "out")
+
+y = in_hist[0]
+err = np.sqrt(in_hist[0])
+plt.errorbar(in_hist[1][:-1], in_hist[0], fmt="o", yerr=err,
+        label="in")
+
+y = out_hist[0]
+err = np.sqrt(out_hist[0])
+plt.errorbar(out_hist[1][:-1], out_hist[0], fmt="o", yerr=err,
+        label="out")
+
+plt.yscale("log")
+plt.xscale("log")
+
+plt.xlabel("$k$")
+plt.ylabel("$NP(k_{in})$")
+
+plt.tight_layout()
+plt.legend()
+```
+
+```{python}
+# subgraph of largest component
+u = gt.extract_largest_component(g, directed=True) # this appears to be the wrong way to do this, because the subgraph is very small. Maybe it only selects a subgraph which is connected by in and out edges?
+u = gt.Graph(u, prune=True)
+pos = gt.sfdp_layout(u, eweight=u.edge_properties["weight"])
+
+gt.graph_draw(u, pos)
 ```
