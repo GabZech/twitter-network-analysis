@@ -148,7 +148,7 @@ def add_profile_url(df, username_col):
 ```
 
 
-Now let's prepare the data and print some relevant information about it.
+Now let's prepare the dataset and print some relevant information about it.
 
 ```{python}
 
@@ -180,84 +180,62 @@ print(f"\nNumber of retweets with missing usernames for the original tweeter: {m
 
 ```
 
-```{python}
-import graph_tool.all as gt
-# create adjacency matrix to import data into gt.Graph
-def get_adj_m(df):
-    adj = pd.crosstab(df['retweet_author_username'],
-    df['tweet_author_username'])
-    idx = adj.index.union(adj.columns)
-    adj_np = adj.reindex(index=idx, columns=idx, fill_value=0).to_numpy()
-
-    idx = adj_np.nonzero()
-    weights = adj_np[idx]
-    return idx, weights, adj
-
-idx, weights, adj = get_adj_m(df)
-
-g = gt.Graph()
-g.add_edge_list(np.transpose(idx))
-ew = g.new_edge_property("int")
-ew.a = weights
-g.edge_properties["weight"] = ew
-```
+Now let's prepare the graph.
 
 ```{python}
-adj = pd.crosstab(df['retweet_author_username'],
-    df['tweet_author_username'])
+# prepare dataset for graph
+df_ = df.copy()
+df_["weight"] = df_.groupby(['retweet_author_username', 'tweet_author_username']).transform('size')
+df_ = df_[columns].drop_duplicates(subset=['retweet_author_username', 'tweet_author_username'])
 
-g_list = []
-g = gt.Graph()
-eprop = g.new_edge_property('int')
-g.edge_properties['weight'] = eprop
-for i in adj.index:
-    for j in adj.columns:
-        if adj.loc[i,j] > 0:
-            g_list.append(
-                (i, j, adj.loc[i,j])
-            )
-```
+# choose columns to keep
+columns = ['retweet_author_username',
+    'tweet_author_username',
+    "weight",
+    ]
 
-```{python}
-# retweeter = df.retweet_author_username.unique()
-# tweeter = df['tweet_author_username'].unique()
-# df1 = pd.DataFrame(retweeter, columns=['author'])
-# df1['tweeter'] = True
-# df2 = pd.DataFrame(tweeter, columns=['author'])
-# df2['tweeter'] = False
-# df_authors = pd.concat([df1, df2])
-```
+# create list of edges
+g_list = [(r, t, w, r, t) for r, t, w in zip(df_.retweet_author_username, df_.tweet_author_username, df_.weight)]
 
-```{python}
-# g = gt.Graph()
-# vprop = g.new_vertex_property('string')
-# eprop = g.new_edge_property('int')
-
-# for i, row1 in df_authors[df_authors.tweeter == True].iterrows():
-#     for j, row2 in df_authors[df_authors.tweeter == False].iterrows():
-#         weight = adj.loc[row1['author'], row2['author']]
-#         if weight == 0: continue
-#         g.add_vertex(i)
-#         g.add_vertex(j)
-#         g.add_edge(i, j, weight)
-#         vprop[i] = row1['author']
-#         vprop[j] = row2['author']
-
-
-```
-
-```{python}
+# create graph
 g = gt.Graph(
-    g_list, 
-    hashed=True, 
-    eprops=[('weight', 'int')]
+    g_list,
+    hashed=True,
+    eprops=[('weight', 'int'), ('retweeter', 'string'), ('tweeter', 'string')]
 )
 
 ```
 
+
+## Visualising the network
+
+### The network as a whole
+
 ```{python}
-gt.graph_draw(g)
+gt.graph_draw(g, pos)
 ```
+
+### The largest component of the network
+
+If we look at the network as a whole, we can see that there are many isolated nodes on its periphery. If we remove those, this is what we get.
+
+```{python}
+# subgraph of largest component
+g = gt.extract_largest_component(g, directed=False)
+g = gt.Graph(g, prune=True)
+pos = gt.sfdp_layout(g, eweight=g.edge_properties["weight"])
+
+gt.graph_draw(g, pos)
+```
+
+## Statistics of the (sub)network
+
+```{python}
+# create mapping from usernames to vertex ids
+id_usernames = {v: g.vp.ids[v] for v in range(len(list(g.vp.ids)))}
+```
+
+### Degree distribution
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -287,11 +265,70 @@ plt.tight_layout()
 plt.legend()
 ```
 
-```{python}
-# subgraph of largest component
-u = gt.extract_largest_component(g, directed=False) # this appears to be the wrong way to do this, because the subgraph is very small. Maybe it only selects a subgraph which is connected by in and out edges?
-u = gt.Graph(u, prune=True)
-pos = gt.sfdp_layout(u, eweight=u.edge_properties["weight"])
 
-gt.graph_draw(u, pos)
+## Measures of centrality
+
+### Betweenness centrality
+
+Betweeness centrality represents the number of all ‘shortest paths’ between nodes that pass through a specific node. In other words, it counts how often that node is part of a short connection.
+In the case of retweets, it measures the **extent to which a user connects different communities of users**.
+
+- Useful when there is flux / information flow within network
+- Helps predict and locate vulnerability of a network (i.e. if you remove a node with high betweeness)
+- Problem: computationally expensive (as you need to calculate all shortest paths)
+
+```{python}
+
+vp, ep = gt.betweenness(g)
+
+gt.graph_draw(g, pos=pos, vertex_fill_color=vp,
+
+              vertex_size=gt.prop_to_size(vp, mi=5, ma=15),
+
+              edge_pen_width=gt.prop_to_size(ep, mi=0.5, ma=5),
+
+              vcmap=plt.cm.gray,
+
+              vorder=vp)
+
+```
+
+Calculate top users betweenness centrality
+
+```{python}
+
+dic = {i: vp.a[i] for i in range(g.num_vertices())}
+dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20])}
+
+# map names to ids
+dic = {id_usernames[k]: v for k, v in dic.items()}
+
+# prepare table
+df_ = pd.DataFrame(dic.items(), columns=["Username", "Betweenness Score"])
+df_["(normalised)"] = df_["Betweenness Score"] / df_["Betweenness Score"].max()
+df_ = df_.round(5)
+df_.index = np.arange(1, len(df_) + 1)
+
+print(df_)
+
+```
+
+Calculate top edges by betweenness centrality
+
+```{python}
+
+dic = {i: ep.a[i] for i in range(g.num_edges())}
+dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20])}
+
+lis = [(list(g.ep.tweeter)[k], list(g.ep.retweeter)[k], v) for k, v in dic.items()]
+
+#df_ = sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20]
+
+df_ = pd.DataFrame(lis, columns=["Tweeter", "Retweeter", "Betweenness Score"])
+df_["(normalised)"] = df_["Betweenness Score"] / df_["Betweenness Score"].max()
+df_ = df_.round(5)
+df_.index = np.arange(1, len(df_) + 1)
+
+print(df_)
+
 ```
