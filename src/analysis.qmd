@@ -187,19 +187,72 @@ def get_adj_m(df):
     adj = pd.crosstab(df['retweet_author_username'],
     df['tweet_author_username'])
     idx = adj.index.union(adj.columns)
-    adj = adj.reindex(index=idx, columns=idx, fill_value=0).to_numpy()
+    adj_np = adj.reindex(index=idx, columns=idx, fill_value=0).to_numpy()
 
-    idx = adj.nonzero()
-    weights = adj[idx]
+    idx = adj_np.nonzero()
+    weights = adj_np[idx]
     return idx, weights, adj
 
-idx, weights, _ = get_adj_m(df)
+idx, weights, adj = get_adj_m(df)
 
 g = gt.Graph()
 g.add_edge_list(np.transpose(idx))
 ew = g.new_edge_property("int")
 ew.a = weights
 g.edge_properties["weight"] = ew
+```
+
+```{python}
+adj = pd.crosstab(df['retweet_author_username'],
+    df['tweet_author_username'])
+
+g_list = []
+g = gt.Graph()
+eprop = g.new_edge_property('int')
+g.edge_properties['weight'] = eprop
+for i in adj.index:
+    for j in adj.columns:
+        if adj.loc[i,j] > 0:
+            g_list.append(
+                (i, j, adj.loc[i,j])
+            )
+```
+
+```{python}
+# retweeter = df.retweet_author_username.unique()
+# tweeter = df['tweet_author_username'].unique()
+# df1 = pd.DataFrame(retweeter, columns=['author'])
+# df1['tweeter'] = True
+# df2 = pd.DataFrame(tweeter, columns=['author'])
+# df2['tweeter'] = False
+# df_authors = pd.concat([df1, df2])
+```
+
+```{python}
+# g = gt.Graph()
+# vprop = g.new_vertex_property('string')
+# eprop = g.new_edge_property('int')
+
+# for i, row1 in df_authors[df_authors.tweeter == True].iterrows():
+#     for j, row2 in df_authors[df_authors.tweeter == False].iterrows():
+#         weight = adj.loc[row1['author'], row2['author']]
+#         if weight == 0: continue
+#         g.add_vertex(i)
+#         g.add_vertex(j)
+#         g.add_edge(i, j, weight)
+#         vprop[i] = row1['author']
+#         vprop[j] = row2['author']
+
+
+```
+
+```{python}
+g = gt.Graph(
+    g_list, 
+    hashed=True, 
+    eprops=[('weight', 'int')]
+)
+
 ```
 
 ```{python}
@@ -236,7 +289,7 @@ plt.legend()
 
 ```{python}
 # subgraph of largest component
-u = gt.extract_largest_component(g, directed=True) # this appears to be the wrong way to do this, because the subgraph is very small. Maybe it only selects a subgraph which is connected by in and out edges?
+u = gt.extract_largest_component(g, directed=False) # this appears to be the wrong way to do this, because the subgraph is very small. Maybe it only selects a subgraph which is connected by in and out edges?
 u = gt.Graph(u, prune=True)
 pos = gt.sfdp_layout(u, eweight=u.edge_properties["weight"])
 
