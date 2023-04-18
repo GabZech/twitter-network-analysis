@@ -445,7 +445,7 @@ In the case of retweets, it measures the **extent to which a user connects diffe
 
 ```{python}
 
-vp, ep = gt.betweenness(g)
+vp, ep = gt.betweenness(g, pivots=None, vprop=None, eprop=None, weight=g.ep["weight"], norm=True)
 
 gt.graph_draw(g, pos=pos, vertex_fill_color=vp,
               vertex_size=gt.prop_to_size(vp, mi=1, ma=10),
