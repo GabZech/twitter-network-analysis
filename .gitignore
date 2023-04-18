@@ -132,3 +132,4 @@ dmypy.json
 data/
 src/.jupyter_cache
 /.quarto/
+ignore
