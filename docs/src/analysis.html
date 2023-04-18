@@ -417,13 +417,14 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell" data-execution_count="4">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(gf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(gf)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0fb482d060, at 0x7f0f51a1be20&gt;</code></pre>
+<pre><code>''</code></pre>
 </div>
 </div>
 </section>
@@ -436,13 +437,14 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subgraph of largest component</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.extract_largest_component(gf, directed<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph(g, prune<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4f21ffd0&gt;</code></pre>
+<pre><code>''</code></pre>
 </div>
 </div>
 </section>
@@ -453,13 +455,14 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell" data-execution_count="6">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.fruchterman_reingold_layout(g, weight<span class="op">=</span><span class="va">None</span>, a<span class="op">=</span><span class="va">None</span>, r<span class="op">=</span><span class="fl">1.0</span>, scale<span class="op">=</span><span class="va">None</span>, circular<span class="op">=</span><span class="va">False</span>, grid<span class="op">=</span><span class="va">True</span>, t_range<span class="op">=</span><span class="va">None</span>, n_iter<span class="op">=</span><span class="dv">10</span>, pos<span class="op">=</span><span class="va">None</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.fruchterman_reingold_layout(g, weight<span class="op">=</span><span class="va">None</span>, a<span class="op">=</span><span class="va">None</span>, r<span class="op">=</span><span class="fl">1.0</span>, scale<span class="op">=</span><span class="va">None</span>, circular<span class="op">=</span><span class="va">False</span>, grid<span class="op">=</span><span class="va">True</span>, t_range<span class="op">=</span><span class="va">None</span>, n_iter<span class="op">=</span><span class="dv">10</span>, pos<span class="op">=</span><span class="va">None</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="6">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f101dacbc40&gt;</code></pre>
+<pre><code>''</code></pre>
 </div>
 </div>
 <p>Comment: super expensive, takes a long time to compute even with 10 iterations (that’s why it looks so bad)</p>
@@ -469,29 +472,24 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell" data-execution_count="7">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.sfdp_layout(g, vweight<span class="op">=</span><span class="va">None</span>, eweight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], pin<span class="op">=</span><span class="va">None</span>, groups<span class="op">=</span><span class="va">None</span>, C<span class="op">=</span><span class="fl">0.2</span>, K<span class="op">=</span><span class="va">None</span>, p<span class="op">=</span><span class="fl">2.0</span>, theta<span class="op">=</span><span class="fl">0.6</span>, max_level<span class="op">=</span><span class="dv">15</span>, r<span class="op">=</span><span class="fl">1.0</span>, gamma<span class="op">=</span><span class="fl">0.3</span>, mu<span class="op">=</span><span class="fl">2.0</span>, kappa<span class="op">=</span><span class="fl">1.0</span>, rmap<span class="op">=</span><span class="va">None</span>, R<span class="op">=</span><span class="dv">1</span>, init_step<span class="op">=</span><span class="va">None</span>, cooling_step<span class="op">=</span><span class="fl">0.95</span>, adaptive_cooling<span class="op">=</span><span class="va">True</span>, epsilon<span class="op">=</span><span class="fl">0.01</span>, max_iter<span class="op">=</span><span class="dv">0</span>, pos<span class="op">=</span><span class="va">None</span>, multilevel<span class="op">=</span><span class="va">None</span>, coarse_method<span class="op">=</span><span class="st">'hybrid'</span>, mivs_thres<span class="op">=</span><span class="fl">0.9</span>, ec_thres<span class="op">=</span><span class="fl">0.75</span>, weighted_coarse<span class="op">=</span><span class="va">False</span>, verbose<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.sfdp_layout(g, vweight<span class="op">=</span><span class="va">None</span>, eweight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], pin<span class="op">=</span><span class="va">None</span>, groups<span class="op">=</span><span class="va">None</span>, C<span class="op">=</span><span class="fl">0.2</span>, K<span class="op">=</span><span class="va">None</span>, p<span class="op">=</span><span class="fl">2.0</span>, theta<span class="op">=</span><span class="fl">0.6</span>, max_level<span class="op">=</span><span class="dv">15</span>, r<span class="op">=</span><span class="fl">1.0</span>, gamma<span class="op">=</span><span class="fl">0.3</span>, mu<span class="op">=</span><span class="fl">2.0</span>, kappa<span class="op">=</span><span class="fl">1.0</span>, rmap<span class="op">=</span><span class="va">None</span>, R<span class="op">=</span><span class="dv">1</span>, init_step<span class="op">=</span><span class="va">None</span>, cooling_step<span class="op">=</span><span class="fl">0.95</span>, adaptive_cooling<span class="op">=</span><span class="va">True</span>, epsilon<span class="op">=</span><span class="fl">0.01</span>, max_iter<span class="op">=</span><span class="dv">0</span>, pos<span class="op">=</span><span class="va">None</span>, multilevel<span class="op">=</span><span class="va">None</span>, coarse_method<span class="op">=</span><span class="st">'hybrid'</span>, mivs_thres<span class="op">=</span><span class="fl">0.9</span>, ec_thres<span class="op">=</span><span class="fl">0.75</span>, weighted_coarse<span class="op">=</span><span class="va">False</span>, verbose<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f5194f970&gt;</code></pre>
+<pre><code>''</code></pre>
 </div>
 </div>
 </section>
-<section id="section" class="level4">
-<h4 class="anchored" data-anchor-id="section"></h4>
-</section>
-<section id="choose-a-layour-and-save-positions" class="level4">
-<h4 class="anchored" data-anchor-id="choose-a-layour-and-save-positions">Choose a layour and save positions</h4>
+<section id="choose-a-layout-and-save-positions" class="level4">
+<h4 class="anchored" data-anchor-id="choose-a-layout-and-save-positions">Choose a layout and save positions</h4>
 <div class="cell" data-execution_count="8">
-<details>
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> gt.sfdp_layout(g, eweight<span class="op">=</span>g.edge_properties[<span class="st">"weight"</span>])</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create mapping from usernames to vertex ids</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>id_usernames <span class="op">=</span> {v: g.vp.ids[v] <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp.ids)))}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 </section>
@@ -551,7 +549,8 @@ weight         (edge)    (type: int32_t)</code></pre>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>bins, y<span class="op">=</span>hist,</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="va">None</span>,</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="va">None</span>, ylabel<span class="op">=</span><span class="va">None</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="va">None</span>, ylabel<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Number of edges with weight:
@@ -592,8 +591,11 @@ weight         (edge)    (type: int32_t)</code></pre>
 35: 0
 36: 1</code></pre>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>''</code></pre>
+</div>
 <div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-11-output-2.png" width="583" height="415"></p>
+<p><img src="analysis_files/figure-html/cell-11-output-3.png" width="583" height="415"></p>
 </div>
 </div>
 </section>
@@ -602,18 +604,18 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell" data-execution_count="11">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>average_path_length_in <span class="op">=</span> gt.vertex_average(g, <span class="st">"in"</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>average_path_length_out <span class="op">=</span> gt.vertex_average(g, <span class="st">"out"</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>average_path_length_total <span class="op">=</span> (gt.vertex_average(g, <span class="st">"total"</span>))</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (total): </span><span class="sc">{</span>average_path_length_total[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_total[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (in): </span><span class="sc">{</span>average_path_length_in[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_in[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (out): </span><span class="sc">{</span>average_path_length_out[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_out[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.bar(["in", "out", "total"], [average_path_length_in[0], average_path_length_out[0], average_path_length_total[0]])</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.ylabel("Average path length")</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.title("Average path length of the network")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>average_path_length_in <span class="op">=</span> gt.vertex_average(g, <span class="st">"in"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>average_path_length_out <span class="op">=</span> gt.vertex_average(g, <span class="st">"out"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>average_path_length_total <span class="op">=</span> (gt.vertex_average(g, <span class="st">"total"</span>))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (total): </span><span class="sc">{</span>average_path_length_total[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_total[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (in): </span><span class="sc">{</span>average_path_length_in[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_in[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (out): </span><span class="sc">{</span>average_path_length_out[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_out[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.bar(["in", "out", "total"], [average_path_length_in[0], average_path_length_out[0], average_path_length_total[0]])</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.ylabel("Average path length")</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.title("Average path length of the network")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Average path length of the network (total): 2.9509738079247816 with std: 0.1659641564735749
@@ -629,40 +631,44 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="12">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>hist, bins <span class="op">=</span> gt.distance_histogram(g, weight<span class="op">=</span><span class="va">None</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>], samples<span class="op">=</span><span class="va">None</span>, float_count<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> bins[:<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>[<span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>hist[b]<span class="sc">}</span><span class="ss">"</span>) <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(bins))]</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>bins, y<span class="op">=</span>hist, width<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Shortest distance distribution"</span>,</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span>bins, rotation<span class="op">=</span><span class="dv">90</span>,</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Distance"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>hist, bins <span class="op">=</span> gt.distance_histogram(g, weight<span class="op">=</span><span class="va">None</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>], samples<span class="op">=</span><span class="va">None</span>, float_count<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> bins[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>[<span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>hist[b]<span class="sc">}</span><span class="ss">"</span>) <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(bins))]</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>bins, y<span class="op">=</span>hist, width<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Shortest distance distribution"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span>bins, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Distance"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>1: 8769
-2: 13492
-3: 13843
-4: 14240
-5: 16133
-6: 13047
-7: 9931
-8: 7197
-9: 6146
-10: 6691
-11: 6788
-12: 5903
-13: 9490
-14: 11033
-15: 8249
-16: 4885
-17: 2364
-18: 851
-19: 145
+<pre><code>1: 8743
+2: 13474
+3: 13850
+4: 14242
+5: 16132
+6: 13068
+7: 9925
+8: 7192
+9: 6137
+10: 6683
+11: 6783
+12: 5910
+13: 9495
+14: 11039
+15: 8258
+16: 4897
+17: 2371
+18: 850
+19: 148
 20: 13</code></pre>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>''</code></pre>
+</div>
 <div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-13-output-2.png" width="610" height="453"></p>
+<p><img src="analysis_files/figure-html/cell-13-output-3.png" width="610" height="453"></p>
 </div>
 </div>
 </section>
@@ -678,29 +684,29 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="13">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>in_deg <span class="op">=</span> g.get_in_degrees(g.get_vertices())</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {b: in_deg[b] <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(in_deg))}</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>values_sum <span class="op">=</span> <span class="bu">sum</span>(dic.values())</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"In-Degrees"</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(share)"</span>] <span class="op">=</span> ((df_[score_name] <span class="op">/</span> values_sum)<span class="op">*</span><span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>in_deg <span class="op">=</span> g.get_in_degrees(g.get_vertices())</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {b: in_deg[b] <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(in_deg))}</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>values_sum <span class="op">=</span> <span class="bu">sum</span>(dic.values())</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"In-Degrees"</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(share)"</span>] <span class="op">=</span> ((df_[score_name] <span class="op">/</span> values_sum)<span class="op">*</span><span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Username  In-Degrees  (normalised)  (share)
@@ -739,29 +745,29 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="14">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>out_deg <span class="op">=</span> g.get_out_degrees(g.get_vertices())</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {b: out_deg[b] <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(out_deg))}</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>values_sum <span class="op">=</span> <span class="bu">sum</span>(dic.values())</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Out-Degrees"</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(share)"</span>] <span class="op">=</span> ((df_[score_name] <span class="op">/</span> values_sum)<span class="op">*</span><span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>out_deg <span class="op">=</span> g.get_out_degrees(g.get_vertices())</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {b: out_deg[b] <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(out_deg))}</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>values_sum <span class="op">=</span> <span class="bu">sum</span>(dic.values())</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Out-Degrees"</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(share)"</span>] <span class="op">=</span> ((df_[score_name] <span class="op">/</span> values_sum)<span class="op">*</span><span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Username  Out-Degrees  (normalised)  (share)
@@ -804,14 +810,14 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="15">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>vp, ep <span class="op">=</span> gt.betweenness(g)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>vp,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>              vertex_size<span class="op">=</span>gt.prop_to_size(vp, mi<span class="op">=</span><span class="dv">1</span>, ma<span class="op">=</span><span class="dv">10</span>),</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>              edge_pen_width<span class="op">=</span>gt.prop_to_size(ep, mi<span class="op">=</span><span class="fl">0.5</span>, ma<span class="op">=</span><span class="dv">5</span>),</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>              vcmap<span class="op">=</span>plt.cm.autumn,</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>              vorder<span class="op">=</span>vp)</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>vp, ep <span class="op">=</span> gt.betweenness(g)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>vp,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>              vertex_size<span class="op">=</span>gt.prop_to_size(vp, mi<span class="op">=</span><span class="dv">1</span>, ma<span class="op">=</span><span class="dv">10</span>),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>              edge_pen_width<span class="op">=</span>gt.prop_to_size(ep, mi<span class="op">=</span><span class="fl">0.5</span>, ma<span class="op">=</span><span class="dv">5</span>),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>              vcmap<span class="op">=</span>plt.cm.autumn,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>              vorder<span class="op">=</span>vp)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
@@ -824,25 +830,26 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="16">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: vp.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_vertices())}</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Betweenness Score"</span></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: vp.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_vertices())}</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Betweenness Score"</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Username  Betweenness Score  (normalised)
@@ -867,33 +874,36 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 19         Woe_Real            0.00050          0.26
 20       BerlinSoul            0.00046          0.24</code></pre>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>''</code></pre>
+</div>
 <div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-17-output-2.png" width="687" height="492"></p>
+<p><img src="analysis_files/figure-html/cell-17-output-3.png" width="687" height="492"></p>
 </div>
 </div>
 <p>Calculate top edges by betweenness centrality</p>
 <div class="cell" data-execution_count="17">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: ep.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_edges())}</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get names of tweeters and retweeters</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>lis <span class="op">=</span> [(<span class="bu">list</span>(g.ep.tweeter)[k], <span class="bu">list</span>(g.ep.retweeter)[k], v) <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()]</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Betweenness Score"</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(lis, columns<span class="op">=</span>[<span class="st">"Tweeter"</span>, <span class="st">"Retweeter"</span>, score_name])</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>df_.index, y<span class="op">=</span>df_[score_name],</span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 edges by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span>df_.index, rotation<span class="op">=</span><span class="dv">90</span>,</span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Edges"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: ep.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_edges())}</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get names of tweeters and retweeters</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>lis <span class="op">=</span> [(<span class="bu">list</span>(g.ep.tweeter)[k], <span class="bu">list</span>(g.ep.retweeter)[k], v) <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()]</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Betweenness Score"</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(lis, columns<span class="op">=</span>[<span class="st">"Tweeter"</span>, <span class="st">"Retweeter"</span>, score_name])</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>df_.index, y<span class="op">=</span>df_[score_name],</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 edges by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span>df_.index, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Edges"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Tweeter        Retweeter  Betweenness Score  (normalised)
@@ -929,11 +939,11 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="18">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"eigenvector"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>max_eigenvalue, _ <span class="op">=</span> gt.eigenvector(g, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], vprop<span class="op">=</span>g.vp[<span class="st">"eigenvector"</span>], epsilon<span class="op">=</span><span class="fl">1e-6</span>, max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(max_eigenvalue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"eigenvector"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>max_eigenvalue, _ <span class="op">=</span> gt.eigenvector(g, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], vprop<span class="op">=</span>g.vp[<span class="st">"eigenvector"</span>], epsilon<span class="op">=</span><span class="fl">1e-6</span>, max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(max_eigenvalue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.0</code></pre>
@@ -947,48 +957,48 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="19">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>]</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>df_merged <span class="op">=</span> pd.DataFrame()</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, alpha <span class="kw">in</span> <span class="bu">enumerate</span>(alphas):</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    vp_name <span class="op">=</span> <span class="ss">f"katz_</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    g.vertex_properties[vp_name] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    gt.katz(g, alpha<span class="op">=</span>alpha, beta<span class="op">=</span><span class="va">None</span>, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], vprop<span class="op">=</span>g.vp[vp_name], epsilon<span class="op">=</span><span class="fl">1e-06</span>, max_iter<span class="op">=</span><span class="va">None</span>, norm<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> {i: g.vp[vp_name][i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp[vp_name])))}</span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True))}</span></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prepare table</span></span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    score_name <span class="op">=</span> <span class="ss">f"Katz Score (a=</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">)"</span></span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>    df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)</span></span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>    df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>        df_merged <span class="op">=</span> df_</span>
-<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># df_ = df_[["Username", score_name]]</span></span>
-<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>        df_merged <span class="op">=</span> df_merged.merge(df_, on<span class="op">=</span><span class="st">"Username"</span>, how<span class="op">=</span><span class="st">"left"</span>, suffixes<span class="op">=</span>(<span class="st">""</span>, <span class="ss">f"_</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">"</span>))</span>
-<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>df_top20 <span class="op">=</span> df_merged.sort_values(by<span class="op">=</span>df_merged.columns[<span class="dv">1</span>], ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">20</span>)</span>
-<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_top20)</span>
-<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> sns.catplot(</span>
-<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>df_top20.melt(id_vars<span class="op">=</span><span class="st">'Username'</span>), kind<span class="op">=</span><span class="st">"bar"</span>,</span>
-<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"Username"</span>, x<span class="op">=</span><span class="st">"value"</span>, hue<span class="op">=</span><span class="st">"variable"</span>,</span>
-<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>    legend_out<span class="op">=</span><span class="va">False</span>, aspect<span class="op">=</span><span class="fl">1.5</span></span>
-<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Katz centrality for different alpha values"</span>)</span>
-<span id="cb36-42"><a href="#cb36-42" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>]</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>df_merged <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, alpha <span class="kw">in</span> <span class="bu">enumerate</span>(alphas):</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    vp_name <span class="op">=</span> <span class="ss">f"katz_</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    g.vertex_properties[vp_name] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    gt.katz(g, alpha<span class="op">=</span>alpha, beta<span class="op">=</span><span class="va">None</span>, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], vprop<span class="op">=</span>g.vp[vp_name], epsilon<span class="op">=</span><span class="fl">1e-06</span>, max_iter<span class="op">=</span><span class="va">None</span>, norm<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> {i: g.vp[vp_name][i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp[vp_name])))}</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True))}</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prepare table</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>    score_name <span class="op">=</span> <span class="ss">f"Katz Score (a=</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">)"</span></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>    df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>        df_merged <span class="op">=</span> df_</span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># df_ = df_[["Username", score_name]]</span></span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>        df_merged <span class="op">=</span> df_merged.merge(df_, on<span class="op">=</span><span class="st">"Username"</span>, how<span class="op">=</span><span class="st">"left"</span>, suffixes<span class="op">=</span>(<span class="st">""</span>, <span class="ss">f"_</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">"</span>))</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>df_top20 <span class="op">=</span> df_merged.sort_values(by<span class="op">=</span>df_merged.columns[<span class="dv">1</span>], ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">20</span>)</span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_top20)</span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> sns.catplot(</span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>df_top20.melt(id_vars<span class="op">=</span><span class="st">'Username'</span>), kind<span class="op">=</span><span class="st">"bar"</span>,</span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"Username"</span>, x<span class="op">=</span><span class="st">"value"</span>, hue<span class="op">=</span><span class="st">"variable"</span>,</span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a>    legend_out<span class="op">=</span><span class="va">False</span>, aspect<span class="op">=</span><span class="fl">1.5</span></span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Katz centrality for different alpha values"</span>)</span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Username  Katz Score (a=0.1)  Katz Score (a=0.01)   
@@ -1050,29 +1060,30 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="20">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"pagerank"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>gt.pagerank(g, damping<span class="op">=</span><span class="fl">0.85</span>, pers<span class="op">=</span><span class="va">None</span>, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], prop<span class="op">=</span>g.vp[<span class="st">"pagerank"</span>], epsilon<span class="op">=</span><span class="fl">1e-06</span>, max_iter<span class="op">=</span><span class="va">None</span>, ret_iter<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: g.vp[<span class="st">"pagerank"</span>][i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp[<span class="st">"pagerank"</span>])))}</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Pagerank Score"</span></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>dic.keys(), y<span class="op">=</span>dic.values(),</span>
-<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
-<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"pagerank"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>gt.pagerank(g, damping<span class="op">=</span><span class="fl">0.85</span>, pers<span class="op">=</span><span class="va">None</span>, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], prop<span class="op">=</span>g.vp[<span class="st">"pagerank"</span>], epsilon<span class="op">=</span><span class="fl">1e-06</span>, max_iter<span class="op">=</span><span class="va">None</span>, ret_iter<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: g.vp[<span class="st">"pagerank"</span>][i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp[<span class="st">"pagerank"</span>])))}</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Pagerank Score"</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>dic.keys(), y<span class="op">=</span>dic.values(),</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Username  Pagerank Score  (normalised)
@@ -1097,8 +1108,11 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 19       RSandra266         0.00609          0.17
 20          LHaasis         0.00564          0.16</code></pre>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>''</code></pre>
+</div>
 <div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-21-output-2.png" width="606" height="547"></p>
+<p><img src="analysis_files/figure-html/cell-21-output-3.png" width="606" height="547"></p>
 </div>
 </div>
 </section>
@@ -1110,12 +1124,12 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="21">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"local_clustering"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>gt.local_clustering(g, prop<span class="op">=</span>g.vp[<span class="st">"local_clustering"</span>], undirected<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"local_clustering"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>gt.local_clustering(g, prop<span class="op">=</span>g.vp[<span class="st">"local_clustering"</span>], undirected<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="21">
-<pre><code>&lt;VertexPropertyMap object with value type 'double', for Graph 0x7f0f51a1aa10, at 0x7f0f4b4dbd90&gt;</code></pre>
+<pre><code>&lt;VertexPropertyMap object with value type 'double', for Graph 0x7fa5d5800a30, at 0x7fa56cd17100&gt;</code></pre>
 </div>
 </div>
 <p>Comments: how do I use this?</p>
@@ -1125,12 +1139,12 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="22">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>gt.pseudo_diameter(g,  source<span class="op">=</span><span class="va">None</span>, weights<span class="op">=</span>g.ep[<span class="st">"weight"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>gt.pseudo_diameter(g,  source<span class="op">=</span><span class="va">None</span>, weights<span class="op">=</span>g.ep[<span class="st">"weight"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>(1.0,
- (&lt;Vertex object with index '0' at 0x7f0f4b9a4fc0&gt;,
-  &lt;Vertex object with index '453' at 0x7f0f4b9a40c0&gt;))</code></pre>
+ (&lt;Vertex object with index '0' at 0x7fa56cfb45c0&gt;,
+  &lt;Vertex object with index '453' at 0x7fa56cfb4dc0&gt;))</code></pre>
 </div>
 </div>
 </section>
@@ -1139,15 +1153,15 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="23">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>root <span class="op">=</span> g.vertex(<span class="dv">101</span>) <span class="co"># username: leseerlaubnis</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.radial_tree_layout(g, root, rel_order<span class="op">=</span><span class="va">None</span>, rel_order_leaf<span class="op">=</span><span class="va">False</span>, weighted<span class="op">=</span><span class="va">False</span>, node_weight<span class="op">=</span><span class="va">None</span>, r<span class="op">=</span><span class="fl">1.0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>root <span class="op">=</span> g.vertex(<span class="dv">101</span>) <span class="co"># username: leseerlaubnis</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.radial_tree_layout(g, root, rel_order<span class="op">=</span><span class="va">None</span>, rel_order_leaf<span class="op">=</span><span class="va">False</span>, weighted<span class="op">=</span><span class="va">False</span>, node_weight<span class="op">=</span><span class="va">None</span>, r<span class="op">=</span><span class="fl">1.0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="23">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4a978fa0&gt;</code></pre>
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7fa5d5800a30, at 0x7fa56c9a74c0&gt;</code></pre>
 </div>
 </div>
 <p>Comment: what does that show, exactly?</p>
@@ -1157,61 +1171,61 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="24">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> gt.minimize_blockmodel_dl(g)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>state.draw(vertex_shape<span class="op">=</span>state.get_blocks())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> gt.minimize_blockmodel_dl(g)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>state.draw(vertex_shape<span class="op">=</span>state.get_blocks())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="24">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4b520580&gt;</code></pre>
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7fa5d5800a30, at 0x7fa56c9936d0&gt;</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="25">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>state2 <span class="op">=</span> gt.minimize_nested_blockmodel_dl(g)</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>state2.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>state2 <span class="op">=</span> gt.minimize_nested_blockmodel_dl(g)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>state2.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="25">
-<pre><code>(&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4b9ae380&gt;,
- &lt;GraphView object, directed, with 5967 vertices and 5966 edges, edges filtered by (&lt;EdgePropertyMap object with value type 'bool', for Graph 0x7f0f4a97a050, at 0x7f0f4b289d20&gt;, False), vertices filtered by (&lt;VertexPropertyMap object with value type 'bool', for Graph 0x7f0f4a97a050, at 0x7f0f4b9ae350&gt;, False), at 0x7f0f4a97a050&gt;,
- &lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f4a97a050, at 0x7f0f4b73d030&gt;)</code></pre>
+<pre><code>(&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7fa5d5800a30, at 0x7fa56c9d2470&gt;,
+ &lt;GraphView object, directed, with 5973 vertices and 5972 edges, edges filtered by (&lt;EdgePropertyMap object with value type 'bool', for Graph 0x7fa56c9d3610, at 0x7fa56cec8040&gt;, False), vertices filtered by (&lt;VertexPropertyMap object with value type 'bool', for Graph 0x7fa56c9d3610, at 0x7fa63ea82cb0&gt;, False), at 0x7fa56c9d3610&gt;,
+ &lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7fa56c9d3610, at 0x7fa56cec8640&gt;)</code></pre>
 </div>
 </div>
 <p>Comment: What is going on here??</p>
 <div class="cell" data-execution_count="26">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> gt.minimize_nested_blockmodel_dl(g)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> gt.get_hierarchy_tree(state)[<span class="dv">0</span>]</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>tpos <span class="op">=</span> pos <span class="op">=</span> gt.radial_tree_layout(t, t.vertex(t.num_vertices() <span class="op">-</span> <span class="dv">1</span>, use_index<span class="op">=</span><span class="va">False</span>), weighted<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>cts <span class="op">=</span> gt.get_hierarchy_control_points(g, t, tpos)</span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> g.own_property(tpos)</span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> state.levels[<span class="dv">0</span>].b</span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>shape <span class="op">=</span> b.copy()</span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>shape.a <span class="op">%=</span> <span class="dv">14</span></span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>b, vertex_shape<span class="op">=</span>shape, edge_control_points<span class="op">=</span>cts,</span>
-<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>edge_color<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>], vertex_anchor<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> gt.minimize_nested_blockmodel_dl(g)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> gt.get_hierarchy_tree(state)[<span class="dv">0</span>]</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>tpos <span class="op">=</span> pos <span class="op">=</span> gt.radial_tree_layout(t, t.vertex(t.num_vertices() <span class="op">-</span> <span class="dv">1</span>, use_index<span class="op">=</span><span class="va">False</span>), weighted<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>cts <span class="op">=</span> gt.get_hierarchy_control_points(g, t, tpos)</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> g.own_property(tpos)</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> state.levels[<span class="dv">0</span>].b</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>shape <span class="op">=</span> b.copy()</span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>shape.a <span class="op">%=</span> <span class="dv">14</span></span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>b, vertex_shape<span class="op">=</span>shape, edge_control_points<span class="op">=</span>cts,</span>
+<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>edge_color<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>], vertex_anchor<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-27-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="26">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f101daca830&gt;</code></pre>
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7fa5d5800a30, at 0x7fa573446890&gt;</code></pre>
 </div>
 </div>
 </section>
@@ -1220,23 +1234,23 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="27">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> <span class="bu">sorted</span>([(e.source(), e.target()) <span class="cf">for</span> e <span class="kw">in</span> g.edges()],</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>               key<span class="op">=</span><span class="kw">lambda</span> e: e[<span class="dv">0</span>].in_degree() <span class="op">*</span> e[<span class="dv">1</span>].in_degree())</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>sizes, comp <span class="op">=</span> gt.edge_percolation(g, edges)</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>np.random.shuffle(edges)</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>sizes2, comp <span class="op">=</span> gt.edge_percolation(g, edges)</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>plt.plot(sizes, label<span class="op">=</span><span class="st">"Targeted"</span>)</span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>plt.plot(sizes2, label<span class="op">=</span><span class="st">"Random"</span>)</span>
-<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> <span class="bu">sorted</span>([(e.source(), e.target()) <span class="cf">for</span> e <span class="kw">in</span> g.edges()],</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>               key<span class="op">=</span><span class="kw">lambda</span> e: e[<span class="dv">0</span>].in_degree() <span class="op">*</span> e[<span class="dv">1</span>].in_degree())</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>sizes, comp <span class="op">=</span> gt.edge_percolation(g, edges)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>np.random.shuffle(edges)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>sizes2, comp <span class="op">=</span> gt.edge_percolation(g, edges)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>plt.plot(sizes, label<span class="op">=</span><span class="st">"Targeted"</span>)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>plt.plot(sizes2, label<span class="op">=</span><span class="st">"Random"</span>)</span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="27">
-<pre><code>&lt;matplotlib.legend.Legend at 0x7f0f4b43d840&gt;</code></pre>
+<pre><code>&lt;matplotlib.legend.Legend at 0x7fa56ceca350&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-28-output-2.png" width="583" height="411"></p>
@@ -1248,14 +1262,14 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell" data-execution_count="28">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>kcore <span class="op">=</span> gt.kcore_decomposition(g)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, vertex_fill_color<span class="op">=</span>kcore, vertex_text<span class="op">=</span>kcore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>kcore <span class="op">=</span> gt.kcore_decomposition(g)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, vertex_fill_color<span class="op">=</span>kcore, vertex_text<span class="op">=</span>kcore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="28">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4b3f07c0&gt;</code></pre>
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7fa5d5800a30, at 0x7fa56ca58910&gt;</code></pre>
 </div>
 </div>
 </section>

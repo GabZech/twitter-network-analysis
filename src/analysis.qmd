@@ -231,6 +231,7 @@ gf.list_properties()
 
 ```{python}
 gt.graph_draw(gf)
+;
 ```
 
 ### The largest component of the network
@@ -242,6 +243,7 @@ If we look at the network as a whole, we can see that there are many isolated no
 g = gt.extract_largest_component(gf, directed=False)
 g = gt.Graph(g, prune=True)
 gt.graph_draw(g)
+;
 ```
 
 ### Different layouts
@@ -250,6 +252,7 @@ gt.graph_draw(g)
 
 ```{python}
 gt.graph_draw(g, pos=gt.fruchterman_reingold_layout(g, weight=None, a=None, r=1.0, scale=None, circular=False, grid=True, t_range=None, n_iter=10, pos=None))
+;
 ```
 
 Comment: super expensive, takes a long time to compute even with 10 iterations (that's why it looks so bad)
@@ -258,19 +261,13 @@ Comment: super expensive, takes a long time to compute even with 10 iterations (
 
 ```{python}
 gt.graph_draw(g, pos=gt.sfdp_layout(g, vweight=None, eweight=g.ep["weight"], pin=None, groups=None, C=0.2, K=None, p=2.0, theta=0.6, max_level=15, r=1.0, gamma=0.3, mu=2.0, kappa=1.0, rmap=None, R=1, init_step=None, cooling_step=0.95, adaptive_cooling=True, epsilon=0.01, max_iter=0, pos=None, multilevel=None, coarse_method='hybrid', mivs_thres=0.9, ec_thres=0.75, weighted_coarse=False, verbose=False))
-
+;
 ```
 
-####
+#### Choose a layout and save positions
 
 ```{python}
-
-```
-
-
-#### Choose a layour and save positions
-
-```{python}
+#| code-fold: false
 pos = gt.sfdp_layout(g, eweight=g.edge_properties["weight"])
 
 # create mapping from usernames to vertex ids
@@ -323,8 +320,8 @@ print("Number of edges with weight:")
 plot_bar(x=bins, y=hist,
     title=None,
     xtick=None, rotation=90,
-    xlabel=None, ylabel=None);
-
+    xlabel=None, ylabel=None)
+;
 ```
 
 
@@ -362,8 +359,8 @@ bins = bins[:-1]
 plot_bar(x=bins, y=hist, width=1,
     title="Shortest distance distribution",
     xtick=bins, rotation=90,
-    xlabel="Distance", ylabel="Count");
-
+    xlabel="Distance", ylabel="Count")
+;
 ```
 
 
@@ -481,7 +478,8 @@ print(df_)
 plot_bar(x=list(dic.keys()), y=dic.values(), horizontal=True,
     title=f"Top 20 users by {score_name}",
     xtick=None, rotation=90,
-    xlabel="Username", ylabel="Count");
+    xlabel="Username", ylabel="Count")
+;
 
 ```
 
@@ -604,7 +602,8 @@ print(df_)
 plot_bar(x=dic.keys(), y=dic.values(),
     title=f"Top 20 users by {score_name}",
     xtick=None, rotation=90,
-    xlabel="Username", ylabel="Count");
+    xlabel="Username", ylabel="Count")
+;
 ```
 
 
