@@ -12,3 +12,6 @@ dependencies:
     - ipykernel
     - pyarrow
     - jupyter
+    - jupyter-cache
+    - matplotlib
+    - seaborn
