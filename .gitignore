@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # USER ADDITIONS
-data/raw/all_tweets_lehrkraeftebildung.parquet
-
+data/
+src/.jupyter_cache
 /.quarto/

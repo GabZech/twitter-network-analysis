@@ -111,15 +111,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#the-network-as-a-whole" id="toc-the-network-as-a-whole" class="nav-link" data-scroll-target="#the-network-as-a-whole">The network as a whole</a></li>
   <li><a href="#the-largest-component-of-the-network" id="toc-the-largest-component-of-the-network" class="nav-link" data-scroll-target="#the-largest-component-of-the-network">The largest component of the network</a></li>
+  <li><a href="#different-layouts" id="toc-different-layouts" class="nav-link" data-scroll-target="#different-layouts">Different layouts</a></li>
   </ul></li>
   <li><a href="#statistics-of-the-subnetwork" id="toc-statistics-of-the-subnetwork" class="nav-link" data-scroll-target="#statistics-of-the-subnetwork">Statistics of the (sub)network</a>
   <ul class="collapse">
   <li><a href="#degree-distribution" id="toc-degree-distribution" class="nav-link" data-scroll-target="#degree-distribution">Degree distribution</a></li>
+  <li><a href="#weight-distribution" id="toc-weight-distribution" class="nav-link" data-scroll-target="#weight-distribution">Weight distribution</a></li>
+  <li><a href="#average-path-length" id="toc-average-path-length" class="nav-link" data-scroll-target="#average-path-length">Average path length</a></li>
+  <li><a href="#shortest-distance-distribution" id="toc-shortest-distance-distribution" class="nav-link" data-scroll-target="#shortest-distance-distribution">Shortest distance distribution</a></li>
   </ul></li>
   <li><a href="#measures-of-centrality" id="toc-measures-of-centrality" class="nav-link" data-scroll-target="#measures-of-centrality">Measures of centrality</a>
   <ul class="collapse">
+  <li><a href="#degree-centrality" id="toc-degree-centrality" class="nav-link" data-scroll-target="#degree-centrality">Degree centrality</a></li>
   <li><a href="#betweenness-centrality" id="toc-betweenness-centrality" class="nav-link" data-scroll-target="#betweenness-centrality">Betweenness centrality</a></li>
+  <li><a href="#eigenvalue-centrality" id="toc-eigenvalue-centrality" class="nav-link" data-scroll-target="#eigenvalue-centrality">Eigenvalue centrality</a></li>
+  <li><a href="#katz-centrality" id="toc-katz-centrality" class="nav-link" data-scroll-target="#katz-centrality">Katz centrality</a></li>
+  <li><a href="#pagerank" id="toc-pagerank" class="nav-link" data-scroll-target="#pagerank">Pagerank</a></li>
   </ul></li>
+  <li><a href="#other-stuff-i.e.-i-dont-know-what-im-doing" id="toc-other-stuff-i.e.-i-dont-know-what-im-doing" class="nav-link" data-scroll-target="#other-stuff-i.e.-i-dont-know-what-im-doing">Other stuff (i.e.&nbsp;I don’t know what I’m doing)</a>
+  <ul class="collapse">
+  <li><a href="#local-clustering" id="toc-local-clustering" class="nav-link" data-scroll-target="#local-clustering">Local clustering</a></li>
+  <li><a href="#pseudo-diameter" id="toc-pseudo-diameter" class="nav-link" data-scroll-target="#pseudo-diameter">Pseudo-diameter</a></li>
+  <li><a href="#radial-layout" id="toc-radial-layout" class="nav-link" data-scroll-target="#radial-layout">Radial layout</a></li>
+  <li><a href="#blockmodel" id="toc-blockmodel" class="nav-link" data-scroll-target="#blockmodel">Blockmodel</a></li>
+  <li><a href="#edge-percolation" id="toc-edge-percolation" class="nav-link" data-scroll-target="#edge-percolation">Edge percolation</a></li>
+  <li><a href="#k-core-decpomposition" id="toc-k-core-decpomposition" class="nav-link" data-scroll-target="#k-core-decpomposition">K-core decpomposition</a></li>
+  </ul></li>
+  <li><a href="#comments-issues" id="toc-comments-issues" class="nav-link" data-scroll-target="#comments-issues">COMMENTS / ISSUES</a></li>
   </ul>
 </nav>
 </nav>
@@ -158,140 +176,153 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_missing_usernames(df, username_column):</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> <span class="vs">r"RT @([A-Za-z0-9_]+):"</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    usernames <span class="op">=</span> []</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> index, row <span class="kw">in</span> df.iterrows():</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        match <span class="op">=</span> re.search(pattern, row[<span class="st">"retweet_text"</span>])</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> match:</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            usernames.append(match.group(<span class="dv">1</span>))</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            usernames.append(row[username_column])</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    df[username_column] <span class="op">=</span> usernames</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_bar(x, y, title<span class="op">=</span><span class="va">None</span>, xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">0</span>, xlabel<span class="op">=</span><span class="va">None</span>, ylabel<span class="op">=</span><span class="va">None</span>, width<span class="op">=</span><span class="fl">0.8</span>, horizontal<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> horizontal:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        plt.barh(y<span class="op">=</span>x, width<span class="op">=</span>y, height<span class="op">=</span>width)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        xlabel, ylabel <span class="op">=</span> ylabel, xlabel</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        plt.gca().invert_yaxis()</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        plt.bar(x<span class="op">=</span>x, height<span class="op">=</span>y, width<span class="op">=</span>width)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    plt.xticks(xtick, rotation<span class="op">=</span>rotation)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(xlabel)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(ylabel)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    plt.title(title)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_time_range(df):</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the time range of the DataFrame</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">    date_lang : str, optional</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">        Language of the date, by default "de_DE"</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_missing_usernames(df, username_column):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> <span class="vs">r"RT @([A-Za-z0-9_]+):"</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    usernames <span class="op">=</span> []</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> index, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        match <span class="op">=</span> re.search(pattern, row[<span class="st">"retweet_text"</span>])</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> match:</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>            usernames.append(match.group(<span class="dv">1</span>))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            usernames.append(row[username_column])</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    df[username_column] <span class="op">=</span> usernames</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">    str</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">        Start date of the DataFrame</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">    str</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">        End date of the DataFrame</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    df.retweet_created_at <span class="op">=</span> df.retweet_created_at.astype(<span class="st">"datetime64[ns, UTC]"</span>)</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    start_date <span class="op">=</span> df.retweet_created_at.<span class="bu">min</span>().strftime(<span class="st">"%B </span><span class="sc">%e</span><span class="st">, %Y"</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    end_date <span class="op">=</span> df.retweet_created_at.<span class="bu">max</span>().strftime(<span class="st">"%B </span><span class="sc">%e</span><span class="st">, %Y"</span>)</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> start_date, end_date</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_time_range(df):</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the time range of the DataFrame</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">    date_lang : str, optional</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">        Language of the date, by default "de_DE"</span></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_largest_values(df, col_name, n):</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the n largest values of a column in a DataFrame</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">    col_name : str</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">        Name of the column to be queried</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co">    n : int</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of largest values to be returned (i.e. number of rows)</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">    str</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">        Start date of the DataFrame</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">    str</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">        End date of the DataFrame</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    df.retweet_created_at <span class="op">=</span> df.retweet_created_at.astype(<span class="st">"datetime64[ns, UTC]"</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    start_date <span class="op">=</span> df.retweet_created_at.<span class="bu">min</span>().strftime(<span class="st">"%B </span><span class="sc">%e</span><span class="st">, %Y"</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    end_date <span class="op">=</span> df.retweet_created_at.<span class="bu">max</span>().strftime(<span class="st">"%B </span><span class="sc">%e</span><span class="st">, %Y"</span>)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> start_date, end_date</span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the n largest values of the column</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    top <span class="op">=</span> df.sort_values(col_name, ascending<span class="op">=</span><span class="va">False</span>).head(n)</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># put col_name as first column</span></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    cols <span class="op">=</span> top.columns.tolist()</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    cols <span class="op">=</span> cols[<span class="op">-</span><span class="dv">1</span>:] <span class="op">+</span> cols[:<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    top <span class="op">=</span> top[cols]</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> top</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_top_users(df, df_authors, column_name, n):</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the top n users with their profiles based on a column in a DataFrame</span></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="co">    Values of the column are standardized so that the largest value is 1.0</span></span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="co">    df_authors : pandas.DataFrame</span></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the usernames and names of authors</span></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="co">    column_name : str</span></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="co">        Name of the column to be queried</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="co">    n : int</span></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of largest values to be returned (i.e. number of rows)</span></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the n largest values of the column</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>    column_name_std <span class="op">=</span> column_name <span class="op">+</span> <span class="st">" (normalised)"</span></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    df[column_name_std] <span class="op">=</span> df[column_name] <span class="op">/</span> <span class="bu">max</span>(df[column_name])</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_largest_values(df, column_name, n)</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> add_profile_url(df, <span class="st">"username"</span>)</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.merge(df, df_authors, on<span class="op">=</span><span class="st">"username"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.<span class="bu">round</span>(<span class="dv">5</span>)</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>    df.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df[[column_name, column_name_std, <span class="st">"username"</span>, <span class="st">"name"</span>, <span class="st">"profile_url"</span>]]</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_authors_name(df):</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the usernames and names of retweet authors and tweet authors</span></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the usernames and names of retweet authors and tweet authors</span></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>    retweet_authors <span class="op">=</span> df[[<span class="st">"retweet_author_username"</span>, <span class="st">"retweet_author_name"</span>]].copy()</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>    retweet_authors.rename(</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>{<span class="st">"retweet_author_username"</span>: <span class="st">"username"</span>, <span class="st">"retweet_author_name"</span>: <span class="st">"name"</span>},</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>        inplace<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>    tweet_authors <span class="op">=</span> df[[<span class="st">"tweet_author_username"</span>, <span class="st">"tweet_author_name"</span>]].copy()</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    tweet_authors.rename(</span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>{<span class="st">"tweet_author_username"</span>: <span class="st">"username"</span>, <span class="st">"tweet_author_name"</span>: <span class="st">"name"</span>},</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>        inplace<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>    authors <span class="op">=</span> pd.concat([retweet_authors, tweet_authors])</span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>    authors <span class="op">=</span> authors.drop_duplicates(subset<span class="op">=</span>[<span class="st">"username"</span>], keep<span class="op">=</span><span class="st">"last"</span>).reset_index(</span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>        drop<span class="op">=</span><span class="va">True</span></span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> authors</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_largest_values(df, col_name, n):</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the n largest values of a column in a DataFrame</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co">    col_name : str</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co">        Name of the column to be queried</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="co">    n : int</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of largest values to be returned (i.e. number of rows)</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the n largest values of the column</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    top <span class="op">=</span> df.sort_values(col_name, ascending<span class="op">=</span><span class="va">False</span>).head(n)</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># put col_name as first column</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    cols <span class="op">=</span> top.columns.tolist()</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    cols <span class="op">=</span> cols[<span class="op">-</span><span class="dv">1</span>:] <span class="op">+</span> cols[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    top <span class="op">=</span> top[cols]</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> top</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_top_users(df, df_authors, column_name, n):</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the top n users with their profiles based on a column in a DataFrame</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="co">    Values of the column are standardized so that the largest value is 1.0</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="co">    df_authors : pandas.DataFrame</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the usernames and names of authors</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="co">    column_name : str</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="co">        Name of the column to be queried</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="co">    n : int</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of largest values to be returned (i.e. number of rows)</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the n largest values of the column</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    column_name_std <span class="op">=</span> column_name <span class="op">+</span> <span class="st">" (normalised)"</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    df[column_name_std] <span class="op">=</span> df[column_name] <span class="op">/</span> <span class="bu">max</span>(df[column_name])</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_largest_values(df, column_name, n)</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> add_profile_url(df, <span class="st">"username"</span>)</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.merge(df, df_authors, on<span class="op">=</span><span class="st">"username"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>    df.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df[[column_name, column_name_std, <span class="st">"username"</span>, <span class="st">"name"</span>, <span class="st">"profile_url"</span>]]</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_authors_name(df):</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the usernames and names of retweet authors and tweet authors</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="co">    df : pandas.DataFrame</span></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame to be queried</span></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="co">        DataFrame with the usernames and names of retweet authors and tweet authors</span></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>    retweet_authors <span class="op">=</span> df[[<span class="st">"retweet_author_username"</span>, <span class="st">"retweet_author_name"</span>]].copy()</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>    retweet_authors.rename(</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>{<span class="st">"retweet_author_username"</span>: <span class="st">"username"</span>, <span class="st">"retweet_author_name"</span>: <span class="st">"name"</span>},</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>        inplace<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_profile_url(df, username_col):</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"profile_url"</span>] <span class="op">=</span> <span class="st">"https://twitter.com/"</span> <span class="op">+</span> df[username_col]</span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>    tweet_authors <span class="op">=</span> df[[<span class="st">"tweet_author_username"</span>, <span class="st">"tweet_author_name"</span>]].copy()</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>    tweet_authors.rename(</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>{<span class="st">"tweet_author_username"</span>: <span class="st">"username"</span>, <span class="st">"tweet_author_name"</span>: <span class="st">"name"</span>},</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>        inplace<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>    authors <span class="op">=</span> pd.concat([retweet_authors, tweet_authors])</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>    authors <span class="op">=</span> authors.drop_duplicates(subset<span class="op">=</span>[<span class="st">"username"</span>], keep<span class="op">=</span><span class="st">"last"</span>).reset_index(</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>        drop<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> authors</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_profile_url(df, username_col):</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"profile_url"</span>] <span class="op">=</span> <span class="st">"https://twitter.com/"</span> <span class="op">+</span> df[username_col]</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now let’s prepare the dataset and print some relevant information about it.</p>
@@ -363,12 +394,20 @@ These are being dropped from the analysis. New total of retweets: 10828</code></
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>g_list <span class="op">=</span> [(r, t, w, r, t) <span class="cf">for</span> r, t, w <span class="kw">in</span> <span class="bu">zip</span>(df_.retweet_author_username, df_.tweet_author_username, df_.weight)]</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># create graph</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph(</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>gf <span class="op">=</span> gt.Graph(</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    g_list,</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    hashed<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    eprops<span class="op">=</span>[(<span class="st">'weight'</span>, <span class="st">'int'</span>), (<span class="st">'retweeter'</span>, <span class="st">'string'</span>), (<span class="st">'tweeter'</span>, <span class="st">'string'</span>)]</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>gf.list_properties()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>ids            (vertex)  (type: string)
+retweeter      (edge)    (type: string)
+tweeter        (edge)    (type: string)
+weight         (edge)    (type: int32_t)</code></pre>
+</div>
 </div>
 </section>
 <section id="visualising-the-network" class="level2">
@@ -378,13 +417,13 @@ These are being dropped from the analysis. New total of retweets: 10828</code></
 <div class="cell" data-execution_count="4">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(gf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="54">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f518c0e74f0, at 0x7f5151fc92d0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0fb482d060, at 0x7f0f51a1be20&gt;</code></pre>
 </div>
 </div>
 </section>
@@ -394,66 +433,366 @@ These are being dropped from the analysis. New total of retweets: 10828</code></
 <div class="cell" data-execution_count="5">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subgraph of largest component</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.extract_largest_component(g, directed<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph(g, prune<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> gt.sfdp_layout(g, eweight<span class="op">=</span>g.edge_properties[<span class="st">"weight"</span>])</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create mapping from usernames to vertex ids</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>id_usernames <span class="op">=</span> {v: g.vp.ids[v] <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp.ids)))}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subgraph of largest component</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.extract_largest_component(gf, directed<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> gt.Graph(g, prune<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
 </div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4f21ffd0&gt;</code></pre>
 </div>
+</div>
+</section>
+<section id="different-layouts" class="level3">
+<h3 class="anchored" data-anchor-id="different-layouts">Different layouts</h3>
+<section id="fruchterman-reingold-layout" class="level4">
+<h4 class="anchored" data-anchor-id="fruchterman-reingold-layout">Fruchterman-Reingold layout</h4>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.fruchterman_reingold_layout(g, weight<span class="op">=</span><span class="va">None</span>, a<span class="op">=</span><span class="va">None</span>, r<span class="op">=</span><span class="fl">1.0</span>, scale<span class="op">=</span><span class="va">None</span>, circular<span class="op">=</span><span class="va">False</span>, grid<span class="op">=</span><span class="va">True</span>, t_range<span class="op">=</span><span class="va">None</span>, n_iter<span class="op">=</span><span class="dv">10</span>, pos<span class="op">=</span><span class="va">None</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f101dacbc40&gt;</code></pre>
+</div>
+</div>
+<p>Comment: super expensive, takes a long time to compute even with 10 iterations (that’s why it looks so bad)</p>
+</section>
+<section id="sfdp-layout" class="level4">
+<h4 class="anchored" data-anchor-id="sfdp-layout">SfDP layout</h4>
+<div class="cell" data-execution_count="7">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.sfdp_layout(g, vweight<span class="op">=</span><span class="va">None</span>, eweight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], pin<span class="op">=</span><span class="va">None</span>, groups<span class="op">=</span><span class="va">None</span>, C<span class="op">=</span><span class="fl">0.2</span>, K<span class="op">=</span><span class="va">None</span>, p<span class="op">=</span><span class="fl">2.0</span>, theta<span class="op">=</span><span class="fl">0.6</span>, max_level<span class="op">=</span><span class="dv">15</span>, r<span class="op">=</span><span class="fl">1.0</span>, gamma<span class="op">=</span><span class="fl">0.3</span>, mu<span class="op">=</span><span class="fl">2.0</span>, kappa<span class="op">=</span><span class="fl">1.0</span>, rmap<span class="op">=</span><span class="va">None</span>, R<span class="op">=</span><span class="dv">1</span>, init_step<span class="op">=</span><span class="va">None</span>, cooling_step<span class="op">=</span><span class="fl">0.95</span>, adaptive_cooling<span class="op">=</span><span class="va">True</span>, epsilon<span class="op">=</span><span class="fl">0.01</span>, max_iter<span class="op">=</span><span class="dv">0</span>, pos<span class="op">=</span><span class="va">None</span>, multilevel<span class="op">=</span><span class="va">None</span>, coarse_method<span class="op">=</span><span class="st">'hybrid'</span>, mivs_thres<span class="op">=</span><span class="fl">0.9</span>, ec_thres<span class="op">=</span><span class="fl">0.75</span>, weighted_coarse<span class="op">=</span><span class="va">False</span>, verbose<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f5194f970&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="section" class="level4">
+<h4 class="anchored" data-anchor-id="section"></h4>
+</section>
+<section id="choose-a-layour-and-save-positions" class="level4">
+<h4 class="anchored" data-anchor-id="choose-a-layour-and-save-positions">Choose a layour and save positions</h4>
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> gt.sfdp_layout(g, eweight<span class="op">=</span>g.edge_properties[<span class="st">"weight"</span>])</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create mapping from usernames to vertex ids</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>id_usernames <span class="op">=</span> {v: g.vp.ids[v] <span class="cf">for</span> v <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp.ids)))}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
 </section>
 </section>
 <section id="statistics-of-the-subnetwork" class="level2">
 <h2 class="anchored" data-anchor-id="statistics-of-the-subnetwork">Statistics of the (sub)network</h2>
 <section id="degree-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="degree-distribution">Degree distribution</h3>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="9">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># in &amp; out degree distribution</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>in_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"in"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>out_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"out"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> in_hist[<span class="dv">0</span>]</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(in_hist[<span class="dv">0</span>])</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.errorbar(in_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], in_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"in"</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> out_hist[<span class="dv">0</span>]</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(out_hist[<span class="dv">0</span>])</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.errorbar(out_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], out_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"out"</span>)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">"log"</span>)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.xscale(<span class="st">"log"</span>)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$k$"</span>)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"$NP(k_</span><span class="sc">{in}</span><span class="st">)$"</span>)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in &amp; out degree distribution</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>in_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"in"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>out_hist <span class="op">=</span> gt.vertex_hist(g, <span class="st">"out"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> in_hist[<span class="dv">0</span>]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(in_hist[<span class="dv">0</span>])</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plt.errorbar(in_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], in_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"in"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> out_hist[<span class="dv">0</span>]</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.sqrt(out_hist[<span class="dv">0</span>])</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>plt.errorbar(out_hist[<span class="dv">1</span>][:<span class="op">-</span><span class="dv">1</span>], out_hist[<span class="dv">0</span>], fmt<span class="op">=</span><span class="st">"o"</span>, yerr<span class="op">=</span>err,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"out"</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">"log"</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>plt.xscale(<span class="st">"log"</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$k$"</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"$NP(k_</span><span class="sc">{in}</span><span class="st">)$"</span>)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="56">
-<pre><code>&lt;matplotlib.legend.Legend at 0x7f5155999cc0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>''</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-7-output-2.png" width="658" height="466"></p>
+<p><img src="analysis_files/figure-html/cell-10-output-2.png" width="658" height="466"></p>
+</div>
+</div>
+</section>
+<section id="weight-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="weight-distribution">Weight distribution</h3>
+<p>Weights indicate how many links there are between two nodes. We can see that most nodes have a weight of 1, which means that they have only one link between them.</p>
+<div class="cell" data-execution_count="10">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>hist, bins <span class="op">=</span> gt.edge_hist(g, g.ep[<span class="st">"weight"</span>], bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>], float_count<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> bins[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of edges with weight:"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>[<span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>hist[b]<span class="sc">}</span><span class="ss">"</span>) <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(bins))]</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>bins, y<span class="op">=</span>hist,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="va">None</span>, ylabel<span class="op">=</span><span class="va">None</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of edges with weight:
+1: 7798
+2: 800
+3: 107
+4: 38
+5: 17
+6: 11
+7: 4
+8: 2
+9: 1
+10: 4
+11: 1
+12: 1
+13: 1
+14: 1
+15: 0
+16: 0
+17: 1
+18: 0
+19: 0
+20: 0
+21: 0
+22: 0
+23: 0
+24: 0
+25: 0
+26: 0
+27: 0
+28: 0
+29: 0
+30: 0
+31: 0
+32: 0
+33: 0
+34: 0
+35: 0
+36: 1</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-11-output-2.png" width="583" height="415"></p>
+</div>
+</div>
+</section>
+<section id="average-path-length" class="level3">
+<h3 class="anchored" data-anchor-id="average-path-length">Average path length</h3>
+<div class="cell" data-execution_count="11">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>average_path_length_in <span class="op">=</span> gt.vertex_average(g, <span class="st">"in"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>average_path_length_out <span class="op">=</span> gt.vertex_average(g, <span class="st">"out"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>average_path_length_total <span class="op">=</span> (gt.vertex_average(g, <span class="st">"total"</span>))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (total): </span><span class="sc">{</span>average_path_length_total[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_total[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (in): </span><span class="sc">{</span>average_path_length_in[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_in[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average path length of the network (out): </span><span class="sc">{</span>average_path_length_out[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> with std: </span><span class="sc">{</span>average_path_length_out[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.bar(["in", "out", "total"], [average_path_length_in[0], average_path_length_out[0], average_path_length_total[0]])</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.ylabel("Average path length")</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.title("Average path length of the network")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average path length of the network (total): 2.9509738079247816 with std: 0.1659641564735749
+Average path length of the network (in): 1.4754869039623908 with std: 0.15507219510386128
+Average path length of the network (out): 1.4754869039623908 with std: 0.05750973570288464</code></pre>
+</div>
+</div>
+<p>Comment: why are in and out the same? The network is directed, so the in and out path lengths should be different, no?</p>
+</section>
+<section id="shortest-distance-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="shortest-distance-distribution">Shortest distance distribution</h3>
+<p>Plot the shortest-distance histogram for each vertex pair in the graph.</p>
+<div class="cell" data-execution_count="12">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>hist, bins <span class="op">=</span> gt.distance_histogram(g, weight<span class="op">=</span><span class="va">None</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>], samples<span class="op">=</span><span class="va">None</span>, float_count<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> bins[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>[<span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>hist[b]<span class="sc">}</span><span class="ss">"</span>) <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(bins))]</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>bins, y<span class="op">=</span>hist, width<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Shortest distance distribution"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span>bins, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Distance"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>1: 8769
+2: 13492
+3: 13843
+4: 14240
+5: 16133
+6: 13047
+7: 9931
+8: 7197
+9: 6146
+10: 6691
+11: 6788
+12: 5903
+13: 9490
+14: 11033
+15: 8249
+16: 4885
+17: 2364
+18: 851
+19: 145
+20: 13</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-13-output-2.png" width="610" height="453"></p>
 </div>
 </div>
 </section>
 </section>
 <section id="measures-of-centrality" class="level2">
 <h2 class="anchored" data-anchor-id="measures-of-centrality">Measures of centrality</h2>
+<section id="degree-centrality" class="level3">
+<h3 class="anchored" data-anchor-id="degree-centrality">Degree centrality</h3>
+<p>Degree centrality represents the number of connections a node has.</p>
+<section id="in-degree-centrality" class="level4">
+<h4 class="anchored" data-anchor-id="in-degree-centrality">In-degree centrality</h4>
+<p>In-degree centrality represents the number of connections going into a node. In the case of retweets, <strong>in-degree centrality will indicate that a user is getting a large number of retweets</strong>.</p>
+<div class="cell" data-execution_count="13">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>in_deg <span class="op">=</span> g.get_in_degrees(g.get_vertices())</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {b: in_deg[b] <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(in_deg))}</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>values_sum <span class="op">=</span> <span class="bu">sum</span>(dic.values())</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"In-Degrees"</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(share)"</span>] <span class="op">=</span> ((df_[score_name] <span class="op">/</span> values_sum)<span class="op">*</span><span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Username  In-Degrees  (normalised)  (share)
+1     leseerlaubnis         411          1.00     4.68
+2      BentFreiwald         352          0.86     4.01
+3   Georg_Pazderski         319          0.78     3.63
+4         blume_bob         263          0.64     2.99
+5       juliansfrth         250          0.61     2.84
+6    lueckenbildung         229          0.56     2.61
+7     BildungSicher         207          0.50     2.36
+8        Deu_Kurier         198          0.48     2.25
+9      DurdenGaming         171          0.42     1.95
+10       WDRaktuell         148          0.36     1.68
+11            dm_ms         110          0.27     1.25
+12    News4teachers          84          0.20     0.96
+13  SozialarbeitNRW          83          0.20     0.94
+14        Lilotanzt          73          0.18     0.83
+15      ehrenlehrer          71          0.17     0.81
+16       zeitonline          71          0.17     0.81
+17      rosenbusch_          68          0.17     0.77
+18  fingurplaustert          68          0.17     0.77
+19        elemob_de          66          0.16     0.75
+20   OliverSKBerlin          63          0.15     0.72</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>''</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-14-output-3.png" width="678" height="462"></p>
+</div>
+</div>
+</section>
+<section id="out-degree-centrality" class="level4">
+<h4 class="anchored" data-anchor-id="out-degree-centrality">Out-degree centrality</h4>
+<p>Out-degree centrality represents the number of connections going out of a node. In the case of retweets, <strong>out-degree centrality will indicate that a user is retweeting a lot</strong>.</p>
+<div class="cell" data-execution_count="14">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>out_deg <span class="op">=</span> g.get_out_degrees(g.get_vertices())</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {b: out_deg[b] <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(out_deg))}</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>values_sum <span class="op">=</span> <span class="bu">sum</span>(dic.values())</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Out-Degrees"</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(share)"</span>] <span class="op">=</span> ((df_[score_name] <span class="op">/</span> values_sum)<span class="op">*</span><span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Username  Out-Degrees  (normalised)  (share)
+1     Bot_TwLehrerZ          319          1.00     3.63
+2          Doriiien           31          0.10     0.35
+3            Ju1820           25          0.08     0.28
+4          goesicke           23          0.07     0.26
+5      Mandala81966           22          0.07     0.25
+6          sanjosko           21          0.07     0.24
+7   Arsenio57509279           20          0.06     0.23
+8          eduBWbot           19          0.06     0.22
+9          lothenon           18          0.06     0.20
+10           _Wir_4           18          0.06     0.20
+11          lgoshen           16          0.05     0.18
+12   julian07646263           16          0.05     0.18
+13         printi71           16          0.05     0.18
+14     miaumiau1975           16          0.05     0.18
+15          seni_bl           15          0.05     0.17
+16    KinderJournal           14          0.04     0.16
+17  Soultiger091111           14          0.04     0.16
+18    SvenDudkowiak           14          0.04     0.16
+19        die_socke           14          0.04     0.16
+20      nicole37911           14          0.04     0.16</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-15-output-2.png" width="686" height="462"></p>
+</div>
+</div>
+<p>Comment: seems like a bot is retweeting a lot more than any other user.</p>
+</section>
+</section>
 <section id="betweenness-centrality" class="level3">
 <h3 class="anchored" data-anchor-id="betweenness-centrality">Betweenness centrality</h3>
 <p>Betweeness centrality represents the number of all ‘shortest paths’ between nodes that pass through a specific node. In other words, it counts how often that node is part of a short connection. In the case of retweets, it measures the <strong>extent to which a user connects different communities of users</strong>.</p>
@@ -462,111 +801,469 @@ These are being dropped from the analysis. New total of retweets: 10828</code></
 <li>Helps predict and locate vulnerability of a network (i.e.&nbsp;if you remove a node with high betweeness)</li>
 <li>Problem: computationally expensive (as you need to calculate all shortest paths)</li>
 </ul>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="15">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vp, ep <span class="op">=</span> gt.betweenness(g)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>vp,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>              vertex_size<span class="op">=</span>gt.prop_to_size(vp, mi<span class="op">=</span><span class="dv">1</span>, ma<span class="op">=</span><span class="dv">10</span>),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              edge_pen_width<span class="op">=</span>gt.prop_to_size(ep, mi<span class="op">=</span><span class="fl">0.5</span>, ma<span class="op">=</span><span class="dv">5</span>),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              vcmap<span class="op">=</span>plt.cm.autumn,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>              vorder<span class="op">=</span>vp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>vp, ep <span class="op">=</span> gt.betweenness(g)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>vp,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>              vertex_size<span class="op">=</span>gt.prop_to_size(vp, mi<span class="op">=</span><span class="dv">1</span>, ma<span class="op">=</span><span class="dv">10</span>),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>              edge_pen_width<span class="op">=</span>gt.prop_to_size(ep, mi<span class="op">=</span><span class="fl">0.5</span>, ma<span class="op">=</span><span class="dv">5</span>),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>              vcmap<span class="op">=</span>plt.cm.autumn,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>              vorder<span class="op">=</span>vp)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="analysis_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+<p><img src="analysis_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="57">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f5151fcb370, at 0x7f51c03113c0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>''</code></pre>
 </div>
 </div>
-<p>Calculate top users betweenness centrality</p>
-<div class="cell" data-execution_count="8">
+<p>Calculate top users by betweenness centrality</p>
+<div class="cell" data-execution_count="16">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: vp.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_vertices())}</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, <span class="st">"Betweenness Score"</span>])</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> df_[<span class="st">"Betweenness Score"</span>] <span class="op">/</span> df_[<span class="st">"Betweenness Score"</span>].<span class="bu">max</span>()</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: vp.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_vertices())}</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Betweenness Score"</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span><span class="bu">list</span>(dic.keys()), y<span class="op">=</span>dic.values(), horizontal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Username  Betweenness Score  (normalised)
-1     leseerlaubnis            0.00192       1.00000
-2      BentsCristin            0.00184       0.96216
-3          SicherEU            0.00180       0.94201
-4    EberhardSchlie            0.00165       0.86060
-5     Haselmaus2010            0.00152       0.79417
-6         Diggi_tal            0.00152       0.79140
-7      EINSBERGBLOG            0.00151       0.78866
-8       hav_hendrik            0.00126       0.65996
-9   JSchmitzLeipzig            0.00122       0.63908
-10      Herr_Nuxoll            0.00119       0.62275
-11            ciffi            0.00115       0.60136
-12    risikogruppen            0.00085       0.44283
-13     sdw_Stiftung            0.00081       0.42026
-14   HSE_Heidelberg            0.00080       0.41651
-15  zumWeitertragen            0.00072       0.37458
-16           SenBJF            0.00068       0.35302
-17    PartnerSchule            0.00059       0.30768
-18      DianaKnodel            0.00053       0.27429
-19         Woe_Real            0.00050       0.26349
-20       BerlinSoul            0.00046       0.23835</code></pre>
+1     leseerlaubnis            0.00192          1.00
+2      BentsCristin            0.00184          0.96
+3          SicherEU            0.00180          0.94
+4    EberhardSchlie            0.00165          0.86
+5     Haselmaus2010            0.00152          0.79
+6         Diggi_tal            0.00152          0.79
+7      EINSBERGBLOG            0.00151          0.79
+8       hav_hendrik            0.00126          0.66
+9   JSchmitzLeipzig            0.00122          0.64
+10      Herr_Nuxoll            0.00119          0.62
+11            ciffi            0.00115          0.60
+12    risikogruppen            0.00085          0.44
+13     sdw_Stiftung            0.00081          0.42
+14   HSE_Heidelberg            0.00080          0.42
+15  zumWeitertragen            0.00072          0.37
+16           SenBJF            0.00068          0.35
+17    PartnerSchule            0.00059          0.31
+18      DianaKnodel            0.00053          0.27
+19         Woe_Real            0.00050          0.26
+20       BerlinSoul            0.00046          0.24</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-17-output-2.png" width="687" height="492"></p>
 </div>
 </div>
 <p>Calculate top edges by betweenness centrality</p>
-<div class="cell" data-execution_count="9">
+<div class="cell" data-execution_count="17">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: ep.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_edges())}</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get names of tweeters and retweeters</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>lis <span class="op">=</span> [(<span class="bu">list</span>(g.ep.tweeter)[k], <span class="bu">list</span>(g.ep.retweeter)[k], v) <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()]</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(lis, columns<span class="op">=</span>[<span class="st">"Tweeter"</span>, <span class="st">"Retweeter"</span>, <span class="st">"Betweenness Score"</span>])</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> df_[<span class="st">"Betweenness Score"</span>] <span class="op">/</span> df_[<span class="st">"Betweenness Score"</span>].<span class="bu">max</span>()</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: ep.a[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g.num_edges())}</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get names of tweeters and retweeters</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>lis <span class="op">=</span> [(<span class="bu">list</span>(g.ep.tweeter)[k], <span class="bu">list</span>(g.ep.retweeter)[k], v) <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()]</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Betweenness Score"</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(lis, columns<span class="op">=</span>[<span class="st">"Tweeter"</span>, <span class="st">"Retweeter"</span>, score_name])</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>df_.index, y<span class="op">=</span>df_[score_name],</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 edges by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span>df_.index, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Edges"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Tweeter        Retweeter  Betweenness Score  (normalised)
-1          SicherEU     BentsCristin            0.00172       1.00000
-2      BentsCristin   EberhardSchlie            0.00165       0.96337
-3    EberhardSchlie    leseerlaubnis            0.00157       0.91803
-4     Haselmaus2010        Diggi_tal            0.00152       0.88464
-5      EINSBERGBLOG    Haselmaus2010            0.00149       0.86772
-6       Herr_Nuxoll      hav_hendrik            0.00121       0.70300
-7       hav_hendrik  JSchmitzLeipzig            0.00118       0.68927
-8             ciffi      Herr_Nuxoll            0.00115       0.67047
-9   JSchmitzLeipzig     EINSBERGBLOG            0.00097       0.56556
-10        Diggi_tal    risikogruppen            0.00081       0.47287
-11   HSE_Heidelberg     sdw_Stiftung            0.00081       0.46975
-12    risikogruppen         SicherEU            0.00075       0.43932
-13  zumWeitertragen         SicherEU            0.00072       0.42075
-14        Diggi_tal  zumWeitertragen            0.00072       0.42007
-15    PartnerSchule           SenBJF            0.00061       0.35491
-16     sdw_Stiftung    PartnerSchule            0.00059       0.34380
-17         Woe_Real            ciffi            0.00052       0.30579
-18           SenBJF     EINSBERGBLOG            0.00052       0.30050
-19  StaackSebastian  dreadlock_dread            0.00039       0.22800
-20       BerlinSoul   regina_kittler            0.00038       0.22337</code></pre>
+1          SicherEU     BentsCristin            0.00172          1.00
+2      BentsCristin   EberhardSchlie            0.00165          0.96
+3    EberhardSchlie    leseerlaubnis            0.00157          0.92
+4     Haselmaus2010        Diggi_tal            0.00152          0.88
+5      EINSBERGBLOG    Haselmaus2010            0.00149          0.87
+6       Herr_Nuxoll      hav_hendrik            0.00121          0.70
+7       hav_hendrik  JSchmitzLeipzig            0.00118          0.69
+8             ciffi      Herr_Nuxoll            0.00115          0.67
+9   JSchmitzLeipzig     EINSBERGBLOG            0.00097          0.57
+10        Diggi_tal    risikogruppen            0.00081          0.47
+11   HSE_Heidelberg     sdw_Stiftung            0.00081          0.47
+12    risikogruppen         SicherEU            0.00075          0.44
+13  zumWeitertragen         SicherEU            0.00072          0.42
+14        Diggi_tal  zumWeitertragen            0.00072          0.42
+15    PartnerSchule           SenBJF            0.00061          0.35
+16     sdw_Stiftung    PartnerSchule            0.00059          0.34
+17         Woe_Real            ciffi            0.00052          0.31
+18           SenBJF     EINSBERGBLOG            0.00052          0.30
+19  StaackSebastian  dreadlock_dread            0.00039          0.23
+20       BerlinSoul   regina_kittler            0.00038          0.22</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-18-output-2.png" width="623" height="453"></p>
 </div>
 </div>
-
-
 </section>
+<section id="eigenvalue-centrality" class="level3">
+<h3 class="anchored" data-anchor-id="eigenvalue-centrality">Eigenvalue centrality</h3>
+<p>Sum of all the eigenvector centralities of its neighbours. <strong>My importance is dependent on the importance of the nodes which I am connected to</strong>. It is <strong>recursive</strong>: so my centrality depends on the centrality of my neighbours, which depends on the centrality of their neighbours, and so on. Takes into account the whole network.</p>
+<div class="cell" data-execution_count="18">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"eigenvector"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>max_eigenvalue, _ <span class="op">=</span> gt.eigenvector(g, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], vprop<span class="op">=</span>g.vp[<span class="st">"eigenvector"</span>], epsilon<span class="op">=</span><span class="fl">1e-6</span>, max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(max_eigenvalue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0</code></pre>
+</div>
+</div>
+<p>Comment: eigenvalues are returning all 0s. Why?</p>
+</section>
+<section id="katz-centrality" class="level3">
+<h3 class="anchored" data-anchor-id="katz-centrality">Katz centrality</h3>
+<p><strong>Katz</strong>: makes use of the adjacency matrix. <strong>Similar to eigenvector, but includes an alpha factor that gradually reduces the influence of further nodes.</strong> So the difference is that you can set (through alpha) how much influence local neighbours have in comparison to far away neighbours.</p>
+<div class="cell" data-execution_count="19">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.01</span>, <span class="fl">0.001</span>]</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>df_merged <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, alpha <span class="kw">in</span> <span class="bu">enumerate</span>(alphas):</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    vp_name <span class="op">=</span> <span class="ss">f"katz_</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    g.vertex_properties[vp_name] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    gt.katz(g, alpha<span class="op">=</span>alpha, beta<span class="op">=</span><span class="va">None</span>, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], vprop<span class="op">=</span>g.vp[vp_name], epsilon<span class="op">=</span><span class="fl">1e-06</span>, max_iter<span class="op">=</span><span class="va">None</span>, norm<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> {i: g.vp[vp_name][i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp[vp_name])))}</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True))}</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prepare table</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    score_name <span class="op">=</span> <span class="ss">f"Katz Score (a=</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">)"</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>    df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>    df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>        df_merged <span class="op">=</span> df_</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># df_ = df_[["Username", score_name]]</span></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>        df_merged <span class="op">=</span> df_merged.merge(df_, on<span class="op">=</span><span class="st">"Username"</span>, how<span class="op">=</span><span class="st">"left"</span>, suffixes<span class="op">=</span>(<span class="st">""</span>, <span class="ss">f"_</span><span class="sc">{</span>alpha<span class="sc">}</span><span class="ss">"</span>))</span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>df_top20 <span class="op">=</span> df_merged.sort_values(by<span class="op">=</span>df_merged.columns[<span class="dv">1</span>], ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">20</span>)</span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_top20)</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> sns.catplot(</span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>df_top20.melt(id_vars<span class="op">=</span><span class="st">'Username'</span>), kind<span class="op">=</span><span class="st">"bar"</span>,</span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"Username"</span>, x<span class="op">=</span><span class="st">"value"</span>, hue<span class="op">=</span><span class="st">"variable"</span>,</span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>    legend_out<span class="op">=</span><span class="va">False</span>, aspect<span class="op">=</span><span class="fl">1.5</span></span>
+<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Katz centrality for different alpha values"</span>)</span>
+<span id="cb36-42"><a href="#cb36-42" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Username  Katz Score (a=0.1)  Katz Score (a=0.01)   
+101     leseerlaubnis             0.40590              0.08876  \
+361          SicherEU             0.25172              0.02081   
+1071    BildungSicher             0.23865              0.04777   
+619         blume_bob             0.22327              0.05060   
+1615     BentFreiwald             0.21547              0.05723   
+1364  Georg_Pazderski             0.21178              0.05875   
+1      lueckenbildung             0.18936              0.04463   
+3998      juliansfrth             0.17636              0.04936   
+1537    onlineschulen             0.16727              0.01964   
+124     News4teachers             0.12658              0.02507   
+3620       WDRaktuell             0.11768              0.03572   
+282        Deu_Kurier             0.11715              0.03757   
+4343   ARD_Presseclub             0.11685              0.02296   
+4726     DurdenGaming             0.10809              0.03426   
+272             dm_ms             0.10724              0.02739   
+30      KinderJournal             0.10326              0.01659   
+488   SozialarbeitNRW             0.08621              0.02513   
+3072          DBmS_de             0.08457              0.01511   
+1428    risikogruppen             0.08073              0.01461   
+3254  zumWeitertragen             0.07941              0.01361   
+
+      Katz Score (a=0.001)  
+101                0.02063  
+361                0.01369  
+1071               0.01643  
+619                0.01677  
+1615               0.01749  
+1364               0.01767  
+1                  0.01615  
+3998               0.01670  
+1537               0.01361  
+124                0.01418  
+3620               0.01529  
+282                0.01549  
+4343               0.01391  
+4726               0.01515  
+272                0.01444  
+30                 0.01331  
+488                0.01420  
+3072               0.01317  
+1428               0.01312  
+3254               0.01301  </code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>''</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-20-output-3.png" width="709" height="488"></p>
+</div>
+</div>
+</section>
+<section id="pagerank" class="level3">
+<h3 class="anchored" data-anchor-id="pagerank">Pagerank</h3>
+<p>Similar to eigenvector. For a random walker on a network, what is the expected probability of it being on that node, plus the probability that it jumps to somewhere completely different. The smaller the alpha, the more it jumps around. The higher the number that walker passes through a node, the higher the centrality of that node.</p>
+<p>Adding some noise makse sure results does not point you to the same nodes every time.</p>
+<div class="cell" data-execution_count="20">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"pagerank"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>gt.pagerank(g, damping<span class="op">=</span><span class="fl">0.85</span>, pers<span class="op">=</span><span class="va">None</span>, weight<span class="op">=</span>g.ep[<span class="st">"weight"</span>], prop<span class="op">=</span>g.vp[<span class="st">"pagerank"</span>], epsilon<span class="op">=</span><span class="fl">1e-06</span>, max_iter<span class="op">=</span><span class="va">None</span>, ret_iter<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {i: g.vp[<span class="st">"pagerank"</span>][i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(<span class="bu">list</span>(g.vp[<span class="st">"pagerank"</span>])))}</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {key: val <span class="cf">for</span> key, val <span class="kw">in</span> (<span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">20</span>])}</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="co"># map names to ids</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> {id_usernames[k]: v <span class="cf">for</span> k, v <span class="kw">in</span> dic.items()}</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare table</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>score_name <span class="op">=</span> <span class="st">"Pagerank Score"</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> pd.DataFrame(dic.items(), columns<span class="op">=</span>[<span class="st">"Username"</span>, score_name])</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>df_[<span class="st">"(normalised)"</span>] <span class="op">=</span> (df_[score_name] <span class="op">/</span> df_[score_name].<span class="bu">max</span>()).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>df_ <span class="op">=</span> df_.<span class="bu">round</span>(<span class="dv">5</span>)</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>df_.index <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(df_) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_)</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>plot_bar(x<span class="op">=</span>dic.keys(), y<span class="op">=</span>dic.values(),</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"Top 20 users by </span><span class="sc">{</span>score_name<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>    xtick<span class="op">=</span><span class="va">None</span>, rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    xlabel<span class="op">=</span><span class="st">"Username"</span>, ylabel<span class="op">=</span><span class="st">"Count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Username  Pagerank Score  (normalised)
+1    ARD_Presseclub         0.03629          1.00
+2     BildungSicher         0.02613          0.72
+3       rosenbusch_         0.02271          0.63
+4      BentFreiwald         0.01978          0.55
+5     leseerlaubnis         0.01959          0.54
+6   Georg_Pazderski         0.01578          0.43
+7       juliansfrth         0.01498          0.41
+8         blume_bob         0.01307          0.36
+9     AnthroBlogger         0.01297          0.36
+10   lueckenbildung         0.01285          0.35
+11   ernsterjuenger         0.01099          0.30
+12       Deu_Kurier         0.00939          0.26
+13     DurdenGaming         0.00837          0.23
+14    Anna_Lena2022         0.00764          0.21
+15    BildgSicherBW         0.00752          0.21
+16         JMWiarda         0.00720          0.20
+17  AladinMafaalani         0.00631          0.17
+18       WDRaktuell         0.00614          0.17
+19       RSandra266         0.00609          0.17
+20          LHaasis         0.00564          0.16</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-21-output-2.png" width="606" height="547"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="other-stuff-i.e.-i-dont-know-what-im-doing" class="level2">
+<h2 class="anchored" data-anchor-id="other-stuff-i.e.-i-dont-know-what-im-doing">Other stuff (i.e.&nbsp;I don’t know what I’m doing)</h2>
+<section id="local-clustering" class="level3">
+<h3 class="anchored" data-anchor-id="local-clustering">Local clustering</h3>
+<div class="cell" data-execution_count="21">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>g.vertex_properties[<span class="st">"local_clustering"</span>] <span class="op">=</span> g.new_vertex_property(<span class="st">"double"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>gt.local_clustering(g, prop<span class="op">=</span>g.vp[<span class="st">"local_clustering"</span>], undirected<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>&lt;VertexPropertyMap object with value type 'double', for Graph 0x7f0f51a1aa10, at 0x7f0f4b4dbd90&gt;</code></pre>
+</div>
+</div>
+<p>Comments: how do I use this?</p>
+</section>
+<section id="pseudo-diameter" class="level3">
+<h3 class="anchored" data-anchor-id="pseudo-diameter">Pseudo-diameter</h3>
+<div class="cell" data-execution_count="22">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>gt.pseudo_diameter(g,  source<span class="op">=</span><span class="va">None</span>, weights<span class="op">=</span>g.ep[<span class="st">"weight"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>(1.0,
+ (&lt;Vertex object with index '0' at 0x7f0f4b9a4fc0&gt;,
+  &lt;Vertex object with index '453' at 0x7f0f4b9a40c0&gt;))</code></pre>
+</div>
+</div>
+</section>
+<section id="radial-layout" class="level3">
+<h3 class="anchored" data-anchor-id="radial-layout">Radial layout</h3>
+<div class="cell" data-execution_count="23">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>root <span class="op">=</span> g.vertex(<span class="dv">101</span>) <span class="co"># username: leseerlaubnis</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>gt.radial_tree_layout(g, root, rel_order<span class="op">=</span><span class="va">None</span>, rel_order_leaf<span class="op">=</span><span class="va">False</span>, weighted<span class="op">=</span><span class="va">False</span>, node_weight<span class="op">=</span><span class="va">None</span>, r<span class="op">=</span><span class="fl">1.0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4a978fa0&gt;</code></pre>
+</div>
+</div>
+<p>Comment: what does that show, exactly?</p>
+</section>
+<section id="blockmodel" class="level3">
+<h3 class="anchored" data-anchor-id="blockmodel">Blockmodel</h3>
+<div class="cell" data-execution_count="24">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> gt.minimize_blockmodel_dl(g)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>state.draw(vertex_shape<span class="op">=</span>state.get_blocks())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4b520580&gt;</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="25">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>state2 <span class="op">=</span> gt.minimize_nested_blockmodel_dl(g)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>state2.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>(&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4b9ae380&gt;,
+ &lt;GraphView object, directed, with 5967 vertices and 5966 edges, edges filtered by (&lt;EdgePropertyMap object with value type 'bool', for Graph 0x7f0f4a97a050, at 0x7f0f4b289d20&gt;, False), vertices filtered by (&lt;VertexPropertyMap object with value type 'bool', for Graph 0x7f0f4a97a050, at 0x7f0f4b9ae350&gt;, False), at 0x7f0f4a97a050&gt;,
+ &lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f4a97a050, at 0x7f0f4b73d030&gt;)</code></pre>
+</div>
+</div>
+<p>Comment: What is going on here??</p>
+<div class="cell" data-execution_count="26">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> gt.minimize_nested_blockmodel_dl(g)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> gt.get_hierarchy_tree(state)[<span class="dv">0</span>]</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>tpos <span class="op">=</span> pos <span class="op">=</span> gt.radial_tree_layout(t, t.vertex(t.num_vertices() <span class="op">-</span> <span class="dv">1</span>, use_index<span class="op">=</span><span class="va">False</span>), weighted<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>cts <span class="op">=</span> gt.get_hierarchy_control_points(g, t, tpos)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> g.own_property(tpos)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> state.levels[<span class="dv">0</span>].b</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>shape <span class="op">=</span> b.copy()</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>shape.a <span class="op">%=</span> <span class="dv">14</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, pos<span class="op">=</span>pos, vertex_fill_color<span class="op">=</span>b, vertex_shape<span class="op">=</span>shape, edge_control_points<span class="op">=</span>cts,</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>edge_color<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.3</span>], vertex_anchor<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-27-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f101daca830&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="edge-percolation" class="level3">
+<h3 class="anchored" data-anchor-id="edge-percolation">Edge percolation</h3>
+<div class="cell" data-execution_count="27">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> <span class="bu">sorted</span>([(e.source(), e.target()) <span class="cf">for</span> e <span class="kw">in</span> g.edges()],</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>               key<span class="op">=</span><span class="kw">lambda</span> e: e[<span class="dv">0</span>].in_degree() <span class="op">*</span> e[<span class="dv">1</span>].in_degree())</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>sizes, comp <span class="op">=</span> gt.edge_percolation(g, edges)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>np.random.shuffle(edges)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>sizes2, comp <span class="op">=</span> gt.edge_percolation(g, edges)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>plt.plot(sizes, label<span class="op">=</span><span class="st">"Targeted"</span>)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>plt.plot(sizes2, label<span class="op">=</span><span class="st">"Random"</span>)</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7f0f4b43d840&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-28-output-2.png" width="583" height="411"></p>
+</div>
+</div>
+</section>
+<section id="k-core-decpomposition" class="level3">
+<h3 class="anchored" data-anchor-id="k-core-decpomposition">K-core decpomposition</h3>
+<div class="cell" data-execution_count="28">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>kcore <span class="op">=</span> gt.kcore_decomposition(g)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>gt.graph_draw(g, vertex_fill_color<span class="op">=</span>kcore, vertex_text<span class="op">=</span>kcore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="analysis_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f0f51a1aa10, at 0x7f0f4b3f07c0&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="comments-issues" class="level2">
+<h2 class="anchored" data-anchor-id="comments-issues">COMMENTS / ISSUES</h2>
+
+
 </section>
 
 </main> <!-- /main -->

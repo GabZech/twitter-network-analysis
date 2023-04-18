@@ -11,6 +11,19 @@ import re
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
+def plot_bar(x, y, title=None, xtick=None, rotation=0, xlabel=None, ylabel=None, width=0.8, horizontal=False):
+    if horizontal:
+        plt.barh(y=x, width=y, height=width)
+        xlabel, ylabel = ylabel, xlabel
+        plt.gca().invert_yaxis()
+    else:
+        plt.bar(x=x, height=y, width=width)
+    plt.xticks(xtick, rotation=rotation)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
 
 def extract_missing_usernames(df, username_column):
     pattern = r"RT @([A-Za-z0-9_]+):"
@@ -201,11 +214,13 @@ df_ = df_[columns].drop_duplicates(subset=['retweet_author_username', 'tweet_aut
 g_list = [(r, t, w, r, t) for r, t, w in zip(df_.retweet_author_username, df_.tweet_author_username, df_.weight)]
 
 # create graph
-g = gt.Graph(
+gf = gt.Graph(
     g_list,
     hashed=True,
     eprops=[('weight', 'int'), ('retweeter', 'string'), ('tweeter', 'string')]
 )
+
+gf.list_properties()
 
 ```
 
@@ -215,7 +230,7 @@ g = gt.Graph(
 ### The network as a whole
 
 ```{python}
-gt.graph_draw(g)
+gt.graph_draw(gf)
 ```
 
 ### The largest component of the network
@@ -224,11 +239,39 @@ If we look at the network as a whole, we can see that there are many isolated no
 
 ```{python}
 # subgraph of largest component
-g = gt.extract_largest_component(g, directed=False)
+g = gt.extract_largest_component(gf, directed=False)
 g = gt.Graph(g, prune=True)
-pos = gt.sfdp_layout(g, eweight=g.edge_properties["weight"])
+gt.graph_draw(g)
+```
 
-gt.graph_draw(g, pos)
+### Different layouts
+
+#### Fruchterman-Reingold layout
+
+```{python}
+gt.graph_draw(g, pos=gt.fruchterman_reingold_layout(g, weight=None, a=None, r=1.0, scale=None, circular=False, grid=True, t_range=None, n_iter=10, pos=None))
+```
+
+Comment: super expensive, takes a long time to compute even with 10 iterations (that's why it looks so bad)
+
+#### SfDP layout
+
+```{python}
+gt.graph_draw(g, pos=gt.sfdp_layout(g, vweight=None, eweight=g.ep["weight"], pin=None, groups=None, C=0.2, K=None, p=2.0, theta=0.6, max_level=15, r=1.0, gamma=0.3, mu=2.0, kappa=1.0, rmap=None, R=1, init_step=None, cooling_step=0.95, adaptive_cooling=True, epsilon=0.01, max_iter=0, pos=None, multilevel=None, coarse_method='hybrid', mivs_thres=0.9, ec_thres=0.75, weighted_coarse=False, verbose=False))
+
+```
+
+####
+
+```{python}
+
+```
+
+
+#### Choose a layour and save positions
+
+```{python}
+pos = gt.sfdp_layout(g, eweight=g.edge_properties["weight"])
 
 # create mapping from usernames to vertex ids
 id_usernames = {v: g.vp.ids[v] for v in range(len(list(g.vp.ids)))}
@@ -239,8 +282,6 @@ id_usernames = {v: g.vp.ids[v] for v in range(len(list(g.vp.ids)))}
 ### Degree distribution
 
 ```{python}
-import matplotlib.pyplot as plt
-
 # in & out degree distribution
 
 in_hist = gt.vertex_hist(g, "in")
@@ -264,10 +305,137 @@ plt.ylabel("$NP(k_{in})$")
 
 plt.tight_layout()
 plt.legend()
+;
+```
+
+### Weight distribution
+
+Weights indicate how many links there are between two nodes. We can see that most nodes have a weight of 1, which means that they have only one link between them.
+
+```{python}
+
+hist, bins = gt.edge_hist(g, g.ep["weight"], bins=[0, 1], float_count=False)
+bins = bins[:-1]
+
+print("Number of edges with weight:")
+[print(f"{b}: {hist[b]}") for b in range(1, len(bins))]
+
+plot_bar(x=bins, y=hist,
+    title=None,
+    xtick=None, rotation=90,
+    xlabel=None, ylabel=None);
+
+```
+
+
+### Average path length
+
+```{python}
+
+average_path_length_in = gt.vertex_average(g, "in")
+average_path_length_out = gt.vertex_average(g, "out")
+average_path_length_total = (gt.vertex_average(g, "total"))
+
+print(f"Average path length of the network (total): {average_path_length_total[0]} with std: {average_path_length_total[1]}")
+print(f"Average path length of the network (in): {average_path_length_in[0]} with std: {average_path_length_in[1]}")
+print(f"Average path length of the network (out): {average_path_length_out[0]} with std: {average_path_length_out[1]}")
+
+# plot
+# plt.bar(["in", "out", "total"], [average_path_length_in[0], average_path_length_out[0], average_path_length_total[0]])
+# plt.ylabel("Average path length")
+# plt.title("Average path length of the network")
+
+```
+
+Comment: why are in and out the same? The network is directed, so the in and out path lengths should be different, no?
+
+### Shortest distance distribution
+
+Plot the shortest-distance histogram for each vertex pair in the graph.
+
+```{python}
+hist, bins = gt.distance_histogram(g, weight=None, bins=[0, 1], samples=None, float_count=False)
+bins = bins[:-1]
+
+[print(f"{b}: {hist[b]}") for b in range(1, len(bins))]
+
+plot_bar(x=bins, y=hist, width=1,
+    title="Shortest distance distribution",
+    xtick=bins, rotation=90,
+    xlabel="Distance", ylabel="Count");
+
 ```
 
 
 ## Measures of centrality
+
+### Degree centrality
+
+Degree centrality represents the number of connections a node has.
+
+#### In-degree centrality
+
+In-degree centrality represents the number of connections going into a node.
+In the case of retweets, **in-degree centrality will indicate that a user is getting a large number of retweets**.
+
+```{python}
+in_deg = g.get_in_degrees(g.get_vertices())
+
+dic = {b: in_deg[b] for b in range(1, len(in_deg))}
+values_sum = sum(dic.values())
+dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20])}
+
+# map names to ids
+dic = {id_usernames[k]: v for k, v in dic.items()}
+
+# prepare table
+score_name = "In-Degrees"
+df_ = pd.DataFrame(dic.items(), columns=["Username", score_name])
+df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)
+df_["(share)"] = ((df_[score_name] / values_sum)*100).round(2)
+df_.index = np.arange(1, len(df_) + 1)
+
+print(df_)
+
+plot_bar(x=list(dic.keys()), y=dic.values(), horizontal=True,
+    title=f"Top 20 users by {score_name}",
+    xtick=None, rotation=90,
+    xlabel="Username", ylabel="Count");
+;
+```
+
+#### Out-degree centrality
+
+Out-degree centrality represents the number of connections going out of a node.
+In the case of retweets, **out-degree centrality will indicate that a user is retweeting a lot**.
+
+```{python}
+out_deg = g.get_out_degrees(g.get_vertices())
+
+dic = {b: out_deg[b] for b in range(1, len(out_deg))}
+values_sum = sum(dic.values())
+dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20])}
+
+# map names to ids
+dic = {id_usernames[k]: v for k, v in dic.items()}
+
+# prepare table
+score_name = "Out-Degrees"
+df_ = pd.DataFrame(dic.items(), columns=["Username", score_name])
+df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)
+df_["(share)"] = ((df_[score_name] / values_sum)*100).round(2)
+df_.index = np.arange(1, len(df_) + 1)
+
+plot_bar(x=list(dic.keys()), y=dic.values(), horizontal=True,
+    title=f"Top 20 users by {score_name}",
+    xtick=None, rotation=90,
+    xlabel="Username", ylabel="Count");
+;
+
+print(df_)
+```
+
+Comment: seems like a bot is retweeting a lot more than any other user.
 
 ### Betweenness centrality
 
@@ -287,10 +455,11 @@ gt.graph_draw(g, pos=pos, vertex_fill_color=vp,
               edge_pen_width=gt.prop_to_size(ep, mi=0.5, ma=5),
               vcmap=plt.cm.autumn,
               vorder=vp)
+;
 
 ```
 
-Calculate top users betweenness centrality
+Calculate top users by betweenness centrality
 
 ```{python}
 
@@ -301,12 +470,18 @@ dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse
 dic = {id_usernames[k]: v for k, v in dic.items()}
 
 # prepare table
-df_ = pd.DataFrame(dic.items(), columns=["Username", "Betweenness Score"])
-df_["(normalised)"] = df_["Betweenness Score"] / df_["Betweenness Score"].max()
+score_name = "Betweenness Score"
+df_ = pd.DataFrame(dic.items(), columns=["Username", score_name])
+df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)
 df_ = df_.round(5)
 df_.index = np.arange(1, len(df_) + 1)
 
 print(df_)
+
+plot_bar(x=list(dic.keys()), y=dic.values(), horizontal=True,
+    title=f"Top 20 users by {score_name}",
+    xtick=None, rotation=90,
+    xlabel="Username", ylabel="Count");
 
 ```
 
@@ -321,11 +496,210 @@ dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse
 lis = [(list(g.ep.tweeter)[k], list(g.ep.retweeter)[k], v) for k, v in dic.items()]
 
 # prepare table
-df_ = pd.DataFrame(lis, columns=["Tweeter", "Retweeter", "Betweenness Score"])
-df_["(normalised)"] = df_["Betweenness Score"] / df_["Betweenness Score"].max()
+score_name = "Betweenness Score"
+df_ = pd.DataFrame(lis, columns=["Tweeter", "Retweeter", score_name])
+df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)
 df_ = df_.round(5)
 df_.index = np.arange(1, len(df_) + 1)
 
 print(df_)
 
+plot_bar(x=df_.index, y=df_[score_name],
+    title=f"Top 20 edges by {score_name}",
+    xtick=df_.index, rotation=90,
+    xlabel="Edges", ylabel="Count");
+
 ```
+
+### Eigenvalue centrality
+
+Sum of all the eigenvector centralities of its neighbours. **My importance is dependent on the importance of the nodes which I am connected to**. It is **recursive**: so my centrality depends on the centrality of my neighbours, which depends on the centrality of their neighbours, and so on. Takes into account the whole network.
+
+```{python}
+g.vertex_properties["eigenvector"] = g.new_vertex_property("double")
+
+max_eigenvalue, _ = gt.eigenvector(g, weight=g.ep["weight"], vprop=g.vp["eigenvector"], epsilon=1e-6, max_iter=1000)
+
+print(max_eigenvalue)
+```
+
+Comment: eigenvalues are returning all 0s. Why?
+
+### Katz centrality
+
+**Katz**: makes use of the adjacency matrix. **Similar to eigenvector, but includes an alpha factor that gradually reduces the influence of further nodes.** So the difference is that you can set (through alpha) how much influence local neighbours have in comparison to far away neighbours.
+
+```{python}
+
+import seaborn as sns
+
+alphas = [0.1, 0.01, 0.001]
+
+df_merged = pd.DataFrame()
+
+for i, alpha in enumerate(alphas):
+
+    vp_name = f"katz_{alpha}"
+    g.vertex_properties[vp_name] = g.new_vertex_property("double")
+
+    gt.katz(g, alpha=alpha, beta=None, weight=g.ep["weight"], vprop=g.vp[vp_name], epsilon=1e-06, max_iter=None, norm=True)
+
+    dic = {i: g.vp[vp_name][i] for i in range(len(list(g.vp[vp_name])))}
+    #dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True))}
+    dic = {id_usernames[k]: v for k, v in dic.items()}
+
+    # prepare table
+    score_name = f"Katz Score (a={alpha})"
+    df_ = pd.DataFrame(dic.items(), columns=["Username", score_name])
+    #df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)
+    df_ = df_.round(5)
+    df_.index = np.arange(1, len(df_) + 1)
+
+    if i == 0:
+        df_merged = df_
+    else:
+        # df_ = df_[["Username", score_name]]
+        df_merged = df_merged.merge(df_, on="Username", how="left", suffixes=("", f"_{alpha}"))
+
+df_top20 = df_merged.sort_values(by=df_merged.columns[1], ascending=False).head(20)
+
+print(df_top20)
+
+
+p = sns.catplot(
+    data=df_top20.melt(id_vars='Username'), kind="bar",
+    y="Username", x="value", hue="variable",
+    legend_out=False, aspect=1.5
+)
+plt.title("Katz centrality for different alpha values")
+;
+```
+
+### Pagerank
+
+Similar to eigenvector. For a random walker on a network, what is the expected probability of it being on that node, plus the probability that it jumps to somewhere completely different. The smaller the alpha, the more it jumps around. The higher the number that walker passes through a node, the higher the centrality of that node.
+
+Adding some noise makse sure results does not point you to the same nodes every time.
+
+```{python}
+g.vertex_properties["pagerank"] = g.new_vertex_property("double")
+
+gt.pagerank(g, damping=0.85, pers=None, weight=g.ep["weight"], prop=g.vp["pagerank"], epsilon=1e-06, max_iter=None, ret_iter=False)
+
+dic = {i: g.vp["pagerank"][i] for i in range(len(list(g.vp["pagerank"])))}
+dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20])}
+
+# map names to ids
+dic = {id_usernames[k]: v for k, v in dic.items()}
+
+# prepare table
+score_name = "Pagerank Score"
+df_ = pd.DataFrame(dic.items(), columns=["Username", score_name])
+df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)
+df_ = df_.round(5)
+df_.index = np.arange(1, len(df_) + 1)
+
+print(df_)
+
+plot_bar(x=dic.keys(), y=dic.values(),
+    title=f"Top 20 users by {score_name}",
+    xtick=None, rotation=90,
+    xlabel="Username", ylabel="Count");
+```
+
+
+## Other stuff (i.e. I don't know what I'm doing)
+
+### Local clustering
+
+```{python}
+g.vertex_properties["local_clustering"] = g.new_vertex_property("double")
+
+gt.local_clustering(g, prop=g.vp["local_clustering"], undirected=False)
+
+```
+
+Comments: how do I use this?
+
+### Pseudo-diameter
+
+```{python}
+gt.pseudo_diameter(g,  source=None, weights=g.ep["weight"])
+```
+
+### Radial layout
+
+```{python}
+
+root = g.vertex(101) # username: leseerlaubnis
+
+gt.graph_draw(g, pos=gt.radial_tree_layout(g, root, rel_order=None, rel_order_leaf=False, weighted=False, node_weight=None, r=1.0))
+```
+
+Comment: what does that show, exactly?
+
+### Blockmodel
+
+```{python}
+state = gt.minimize_blockmodel_dl(g)
+
+state.draw(vertex_shape=state.get_blocks())
+```
+
+```{python}
+state2 = gt.minimize_nested_blockmodel_dl(g)
+
+state2.draw()
+```
+
+Comment: What is going on here??
+
+```{python}
+state = gt.minimize_nested_blockmodel_dl(g)
+
+t = gt.get_hierarchy_tree(state)[0]
+
+tpos = pos = gt.radial_tree_layout(t, t.vertex(t.num_vertices() - 1, use_index=False), weighted=True)
+
+cts = gt.get_hierarchy_control_points(g, t, tpos)
+
+pos = g.own_property(tpos)
+
+b = state.levels[0].b
+
+shape = b.copy()
+
+shape.a %= 14
+
+gt.graph_draw(g, pos=pos, vertex_fill_color=b, vertex_shape=shape, edge_control_points=cts,
+edge_color=[0, 0, 0, 0.3], vertex_anchor=0)
+
+```
+
+### Edge percolation
+
+```{python}
+edges = sorted([(e.source(), e.target()) for e in g.edges()],
+               key=lambda e: e[0].in_degree() * e[1].in_degree())
+
+sizes, comp = gt.edge_percolation(g, edges)
+
+np.random.shuffle(edges)
+
+sizes2, comp = gt.edge_percolation(g, edges)
+
+plt.plot(sizes, label="Targeted")
+
+plt.plot(sizes2, label="Random")
+
+plt.legend()
+```
+
+### K-core decpomposition
+
+```{python}
+kcore = gt.kcore_decomposition(g)
+gt.graph_draw(g, vertex_fill_color=kcore, vertex_text=kcore)
+```
+
+## COMMENTS / ISSUES

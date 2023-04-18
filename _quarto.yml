@@ -20,7 +20,7 @@ format:
 
 execute:
     enabled: True
-    cache: False
+    cache: True
 
 editor:
     render-on-save: False
