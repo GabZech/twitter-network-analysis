@@ -423,7 +423,7 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>''</code></pre>
 </div>
 </div>
@@ -443,7 +443,7 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>''</code></pre>
 </div>
 </div>
@@ -461,7 +461,7 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>''</code></pre>
 </div>
 </div>
@@ -478,7 +478,7 @@ weight         (edge)    (type: int32_t)</code></pre>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>''</code></pre>
 </div>
 </div>
@@ -524,15 +524,23 @@ weight         (edge)    (type: int32_t)</code></pre>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>avg_out <span class="op">=</span> g.get_out_degrees(<span class="bu">range</span>(g.num_vertices()), eweight<span class="op">=</span>g.ep[<span class="st">"weight"</span>]).mean()</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>avg_in <span class="op">=</span> g.get_in_degrees(<span class="bu">range</span>(g.num_vertices()), eweight<span class="op">=</span>g.ep[<span class="st">"weight"</span>]).mean()</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average in-degree: </span><span class="sc">{</span>avg_in<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average out-degree: </span><span class="sc">{</span>avg_out<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="24">
-<pre><code>''</code></pre>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average in-degree: 1.7155809267965076
+Average out-degree: 1.7155809267965076</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-10-output-2.png" width="658" height="466"></p>
 </div>
 </div>
+<p>Comment: why the same?? I’m doing something wrong here.</p>
 </section>
 <section id="weight-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="weight-distribution">Weight distribution</h3>
@@ -591,7 +599,7 @@ weight         (edge)    (type: int32_t)</code></pre>
 35: 0
 36: 1</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>''</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -643,28 +651,28 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>1: 8753
-2: 13460
-3: 13827
-4: 14242
-5: 16118
-6: 13033
-7: 9919
-8: 7198
-9: 6143
-10: 6700
-11: 6787
-12: 5916
-13: 9522
-14: 11027
-15: 8272
-16: 4911
-17: 2372
-18: 851
-19: 146
+<pre><code>1: 8718
+2: 13453
+3: 13826
+4: 14249
+5: 16142
+6: 13044
+7: 9924
+8: 7202
+9: 6142
+10: 6680
+11: 6788
+12: 5912
+13: 9525
+14: 11047
+15: 8271
+16: 4895
+17: 2378
+18: 854
+19: 147
 20: 13</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="27">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>''</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -731,7 +739,7 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 19        elemob_de          66          0.16     0.75
 20   OliverSKBerlin          63          0.15     0.72</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>''</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -822,7 +830,7 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>''</code></pre>
 </div>
 </div>
@@ -874,7 +882,7 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 19       BerlinSoul            0.00046          0.24
 20   regina_kittler            0.00045          0.23</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>''</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1045,7 +1053,7 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 1428               0.01312  
 3254               0.01301  </code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="34">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>''</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1108,7 +1116,7 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 19       RSandra266         0.00609          0.17
 20          LHaasis         0.00564          0.16</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="35">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>''</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1128,8 +1136,8 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>gt.local_clustering(g, prop<span class="op">=</span>g.vp[<span class="st">"local_clustering"</span>], undirected<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="36">
-<pre><code>&lt;VertexPropertyMap object with value type 'double', for Graph 0x7f13c2ec3e50, at 0x7f13c0b97e20&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>&lt;VertexPropertyMap object with value type 'double', for Graph 0x7f3aa735eec0, at 0x7f3aa157ca30&gt;</code></pre>
 </div>
 </div>
 <p>Comments: how do I use this?</p>
@@ -1141,10 +1149,10 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>gt.pseudo_diameter(g,  source<span class="op">=</span><span class="va">None</span>, weights<span class="op">=</span>g.ep[<span class="st">"weight"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>(1.0,
- (&lt;Vertex object with index '0' at 0x7f13f0b708c0&gt;,
-  &lt;Vertex object with index '453' at 0x7f13f0b719c0&gt;))</code></pre>
+ (&lt;Vertex object with index '0' at 0x7f3aa25a4d40&gt;,
+  &lt;Vertex object with index '453' at 0x7f3aa25a4540&gt;))</code></pre>
 </div>
 </div>
 </section>
@@ -1160,8 +1168,8 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="38">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f13c2ec3e50, at 0x7f13c2afd330&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f3aa735eec0, at 0x7f3aa20dc550&gt;</code></pre>
 </div>
 </div>
 <p>Comment: what does that show, exactly?</p>
@@ -1178,8 +1186,8 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="39">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f13c2ec3e50, at 0x7f13c0b969e0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f3aa735eec0, at 0x7f3b070a57e0&gt;</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="25">
@@ -1192,10 +1200,10 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="40">
-<pre><code>(&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f13c2ec3e50, at 0x7f142788c7f0&gt;,
- &lt;GraphView object, directed, with 5967 vertices and 5966 edges, edges filtered by (&lt;EdgePropertyMap object with value type 'bool', for Graph 0x7f13c26dbe20, at 0x7f13c26d9ff0&gt;, False), vertices filtered by (&lt;VertexPropertyMap object with value type 'bool', for Graph 0x7f13c26dbe20, at 0x7f13c26d8d30&gt;, False), at 0x7f13c26dbe20&gt;,
- &lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f13c26dbe20, at 0x7f13c26da290&gt;)</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>(&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f3aa735eec0, at 0x7f3aa2282e60&gt;,
+ &lt;GraphView object, directed, with 5966 vertices and 5965 edges, edges filtered by (&lt;EdgePropertyMap object with value type 'bool', for Graph 0x7f3aa2283ca0, at 0x7f3b128118d0&gt;, False), vertices filtered by (&lt;VertexPropertyMap object with value type 'bool', for Graph 0x7f3aa2283ca0, at 0x7f3aa22807f0&gt;, False), at 0x7f3aa2283ca0&gt;,
+ &lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f3aa2283ca0, at 0x7f3aa21ad960&gt;)</code></pre>
 </div>
 </div>
 <p>Comment: What is going on here??</p>
@@ -1224,8 +1232,8 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-27-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="41">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f13c2ec3e50, at 0x7f13c0d251b0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f3aa735eec0, at 0x7f3aa20dfb80&gt;</code></pre>
 </div>
 </div>
 </section>
@@ -1249,8 +1257,8 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="42">
-<pre><code>&lt;matplotlib.legend.Legend at 0x7f13c0d47f10&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>&lt;matplotlib.legend.Legend at 0x7f3aa2328340&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-28-output-2.png" width="583" height="411"></p>
@@ -1268,8 +1276,8 @@ Average path length of the network (out): 1.4754869039623908 with std: 0.0575097
 <div class="cell-output cell-output-display">
 <p><img src="analysis_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="43">
-<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f13c2ec3e50, at 0x7f13c0c75e10&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>&lt;VertexPropertyMap object with value type 'vector&lt;double&gt;', for Graph 0x7f3aa735eec0, at 0x7f3aa1dd21a0&gt;</code></pre>
 </div>
 </div>
 </section>

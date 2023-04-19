@@ -303,7 +303,16 @@ plt.ylabel("$NP(k_{in})$")
 plt.tight_layout()
 plt.legend()
 ;
+
+avg_out = g.get_out_degrees(range(g.num_vertices()), eweight=g.ep["weight"]).mean()
+avg_in = g.get_in_degrees(range(g.num_vertices()), eweight=g.ep["weight"]).mean()
+
+print(f"Average in-degree: {avg_in}")
+print(f"Average out-degree: {avg_out}")
+
 ```
+
+Comment: why the same?? I'm doing something wrong here.
 
 ### Weight distribution
 
