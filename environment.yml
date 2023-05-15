@@ -7,11 +7,13 @@ dependencies:
   - graph-tool
   - pip
   - pip:
-    - pandas
-    - numpy
-    - ipykernel
-    - pyarrow
-    - jupyter
-    - jupyter-cache
-    - matplotlib
-    - seaborn
+      - pandas
+      - numpy
+      - ipykernel
+      - pyarrow
+      - jupyter
+      - jupyter-cache
+      - matplotlib
+      - seaborn
+
+      - tqdm

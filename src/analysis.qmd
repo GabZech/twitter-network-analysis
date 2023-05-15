@@ -240,10 +240,12 @@ If we look at the network as a whole, we can see that there are many isolated no
 
 ```{python}
 # subgraph of largest component
-g = gt.extract_largest_component(gf, directed=False)
-g = gt.Graph(g, prune=True)
-gt.graph_draw(g)
+g = gt.extract_largest_component(gf, directed=False, prune=True)
 ;
+```
+
+```{python}
+gt.graph_draw(g)
 ```
 
 ### Different layouts
@@ -279,81 +281,63 @@ id_usernames = {v: g.vp.ids[v] for v in range(len(list(g.vp.ids)))}
 ### Degree distribution
 
 ```{python}
-# in & out degree distribution
+def plot_stats(g):
+    # in & out degree distribution
+    in_hist = gt.vertex_hist(g, "in")
+    out_hist = gt.vertex_hist(g, "out")
 
-in_hist = gt.vertex_hist(g, "in")
-out_hist = gt.vertex_hist(g, "out")
+    y = in_hist[0]
+    err = np.sqrt(in_hist[0])
+    plt.errorbar(in_hist[1][:-1], in_hist[0], fmt="o", yerr=err,
+            label="in")
 
-y = in_hist[0]
-err = np.sqrt(in_hist[0])
-plt.errorbar(in_hist[1][:-1], in_hist[0], fmt="o", yerr=err,
-        label="in")
+    y = out_hist[0]
+    err = np.sqrt(out_hist[0])
+    plt.errorbar(out_hist[1][:-1], out_hist[0], fmt="o", yerr=err,
+            label="out")
 
-y = out_hist[0]
-err = np.sqrt(out_hist[0])
-plt.errorbar(out_hist[1][:-1], out_hist[0], fmt="o", yerr=err,
-        label="out")
+    plt.yscale("log")
+    plt.xscale("log")
 
-plt.yscale("log")
-plt.xscale("log")
+    plt.xlabel("$k$")
+    plt.ylabel("$NP(k_{in})$")
 
-plt.xlabel("$k$")
-plt.ylabel("$NP(k_{in})$")
+    plt.tight_layout()
+    plt.legend()
+    ;
 
-plt.tight_layout()
-plt.legend()
-;
+    avg_dgr = gt.vertex_average(g, "total")
 
-avg_out = g.get_out_degrees(range(g.num_vertices()), eweight=g.ep["weight"]).mean()
-avg_in = g.get_in_degrees(range(g.num_vertices()), eweight=g.ep["weight"]).mean()
+    print(f"Average degree (total): {avg_dgr}")
 
-print(f"Average in-degree: {avg_in}")
-print(f"Average out-degree: {avg_out}")
+plot_stats(g)
 
 ```
 
-Comment: why the same?? I'm doing something wrong here.
 
 ### Weight distribution
 
 Weights indicate how many links there are between two nodes. We can see that most nodes have a weight of 1, which means that they have only one link between them.
 
 ```{python}
+def weight_dist(g):
+    hist, bins = gt.edge_hist(g, g.ep["weight"], bins=[0, 1], float_count=False)
+    bins = bins[:-1]
 
-hist, bins = gt.edge_hist(g, g.ep["weight"], bins=[0, 1], float_count=False)
-bins = bins[:-1]
+    print("Number of edges with weight:")
+    [print(f"{b}: {hist[b]}") for b in range(1, len(bins))]
 
-print("Number of edges with weight:")
-[print(f"{b}: {hist[b]}") for b in range(1, len(bins))]
+    plot_bar(x=bins, y=hist,
+        title=None,
+        xtick=None, rotation=90,
+        xlabel=None, ylabel=None)
+    ;
 
-plot_bar(x=bins, y=hist,
-    title=None,
-    xtick=None, rotation=90,
-    xlabel=None, ylabel=None)
-;
+    print(f"Average weight: {gt.edge_average(g, g.ep['weight'])}")
+
+weight_dist(g)
 ```
 
-
-### Average path length
-
-```{python}
-
-average_path_length_in = gt.vertex_average(g, "in")
-average_path_length_out = gt.vertex_average(g, "out")
-average_path_length_total = (gt.vertex_average(g, "total"))
-
-print(f"Average path length of the network (total): {average_path_length_total[0]} with std: {average_path_length_total[1]}")
-print(f"Average path length of the network (in): {average_path_length_in[0]} with std: {average_path_length_in[1]}")
-print(f"Average path length of the network (out): {average_path_length_out[0]} with std: {average_path_length_out[1]}")
-
-# plot
-# plt.bar(["in", "out", "total"], [average_path_length_in[0], average_path_length_out[0], average_path_length_total[0]])
-# plt.ylabel("Average path length")
-# plt.title("Average path length of the network")
-
-```
-
-Comment: why are in and out the same? The network is directed, so the in and out path lengths should be different, no?
 
 ### Shortest distance distribution
 
@@ -540,7 +524,7 @@ Comment: eigenvalues are returning all 0s. Why?
 
 import seaborn as sns
 
-alphas = [0.1, 0.01, 0.001]
+alphas = [0.01, 0.005, 0.001]
 
 df_merged = pd.DataFrame()
 
@@ -616,18 +600,245 @@ plot_bar(x=dic.keys(), y=dic.values(),
 ```
 
 
+## Model comparison
+
+```{python}
+N = len(g.get_vertices())
+L = g.get_total_degrees(range(N), eweight=g.ep["weight"]).sum()
+
+# # Erdos-Renyi for directed graphs
+# # For a directed network, the probability of any two vertices being connected by a directed edge can be calculated using the number of edges, denoted as L, and the total number of possible directed edges, denoted as pL.
+# # p = L / pL
+# p = L / (N * (N - 1))
+# def func():
+#     return p, p
+
+# g_er = gt.random_graph(N, func, directed=True)
+# #g_er = gt.extract_largest_component(g_er, directed=False, prune=True)
+
+# gt.graph_draw(g_er)
+
+```
+
+```{python}
+# Erdos-Renyi
+g_er = gf.copy()
+ret = gt.random_rewire(g_er, model='erdos', n_iter=1, edge_sweep=True, parallel_edges=False, self_loops=False, configuration=True, edge_probs=None, block_membership=None, cache_probs=True, persist=False, pin=None, ret_fail=False, verbose=False)
+```
+
+```{python}
+# Erdos-Renyi
+g_er = gf.copy()
+ret = gt.random_rewire(g_er, model='erdos', n_iter=1, edge_sweep=True, parallel_edges=False, self_loops=False, configuration=True, edge_probs=None, block_membership=None, cache_probs=True, persist=False, pin=None, ret_fail=False, verbose=False)
+```
+
+```{python}
+plot_stats(g_er)
+```
+
+
+### Activity-driven model
+
+```{python}
+
+# prepare dataset for graph
+dfa = df.copy()
+#df_["weight"] = df_.groupby(['retweet_author_username', 'tweet_author_username']).transform('size')
+
+dfa["day"] = dfa.retweet_created_at.dt.date
+
+# choose columns to keep
+columns = ['retweet_author_username',
+    'tweet_author_username',
+    "day",
+    ]
+
+dfa = dfa[columns].dropna().reset_index(drop=True)
+
+time_steps = dfa.day.nunique()
+N = len(set(list(dfa.retweet_author_username) + list(dfa.tweet_author_username)))
+L = dfa.shape[0]
+
+dfa
+
+# # find out average number of new retweets per user per day
+# # this is the average number of edges per user per time step
+# avg_num_edges = dfa.groupby(["retweet_author_username", "day"]).size().mean()
+
+# calculate the average number of new retweets per day
+avg_num_edges_day = dfa.groupby(["day"]).size().mean()
+
+# calculate average number of users retweeting per day
+avg_num_users_day = dfa.groupby(["retweet_author_username", "day"], as_index=False).size()
+avg_num_users_day = avg_num_users_day.groupby(["day"]).size().mean()
+
+# activity value: average number of retweets per user per day (considering all users each day)
+act_pot = avg_num_edges_day / N
+print(f"Calculated activity value: {act_pot}")
+```
+
+
+Activity potential distribution
+
+Each user in the model has a activity potential, which is the probability that he becomes active within each time step. Since the activity potential of humans is usually heterogeneous it is approximated with a power-law activity potential distribution $F(x_i) \\sim x_i^{-\\gamma}$. Where $x_i \\in [\\varepsilon, 1]$ denotes the activity potential of the user $i$ and $\\varepsilon$ is the minimum activity constant.
+
+```{python}
+from model import power_law_distribution as dist
+from model import gt_model as model
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import graph_tool.all as gt
+
+np.random.seed(42)
+
+gamma = 2.7
+epsilon = 0.01
+print('expected activity value =', dist.expected_value(gamma, epsilon))
+
+# pdf = dist.pdf(gamma, epsilon)
+# x_vals = np.linspace(epsilon, 1, num=10000)
+# y_pdf = [pdf(x) for x in x_vals]
+
+# fig, ax = plt.subplots()
+# ax.loglog(x_vals, y_pdf, label='PDF')
+# ax.set_title('PDF with $\gamma = {gamma}$ and $\epsilon = {epsilon}$'.format(gamma=gamma, epsilon=epsilon))
+# ax.legend(loc='best')
+# ax.set_xlim(0.01, 1)
+# ax.set_xlabel('x')
+# ax.set_ylabel('f(x)');
+
+
+# cdf = dist.cdf(gamma, epsilon)
+# x_vals = np.linspace(epsilon, 1, num=10000)
+# y_cdf = [cdf(x) for x in x_vals]
+
+# fig, ax = plt.subplots()
+# ax.semilogx(x_vals, y_cdf, label='CDF')
+# ax.set_title('CDF with $\gamma = {gamma}$ and $\epsilon = {epsilon}$'.format(gamma=gamma, epsilon=epsilon))
+# ax.legend(loc='best')
+# ax.legend()
+# ax.set_xlim(0.01, 1)
+# ax.set_ylim(0, 1.1)
+# ax.set_xlabel('x')
+# ax.set_ylabel('F(x)');
+
+```
+
+```{python}
+
+num_users = N
+num_iterations = time_steps
+
+inv_cdf = dist.inv_cdf(gamma, epsilon)
+actyivity_potentials = dist.inverse_transform_sampling(inv_cdf)
+
+gad, events, features = model.gt_model(num_iterations, num_users, actyivity_potentials,
+                                     p_deletion=0, p_triadic_closure=0.9,
+                                     link_reinforecement_inc=1.0,
+                                     memory_strength=5.0,
+                                     max_peer_influence_prob=0.1, peer_influence_thres=0.10, beta=1,
+                                     log_features=True, tqdm=True)
+
+event_log = pd.DataFrame(events, columns=['timestep', 'active user', 'other user', 'peer influenced'])
+
+print(f"ORIGINAL DATASET: \nNumber of edges:{L}, number of nodes:{N}")
+print(f"\nGENERATED MODEL: \nNumber of edges:{gad.num_edges()}, number of nodes:{gad.num_vertices()}")
+
+gad
+
+```
+max_peer_influence_prob:
+
+If not equals 0, the function proceeds to calculate the probability of node influencing its out-neighbours. For each neighbour of node, the function calculates a weight by taking the exponential of the edge weight between node and its neighbour, scaled by beta. If the neighbour was last active at time t-1, then the weight is added to weights_last_active, and in any case, the weight is added to total_weight. The function then calculates an alpha value that is the ratio of weights_last_active to total_weight.
+
+Finally, the function calculates the probability of peer influence (peer_influence_prob) by taking the product of max_prob and alpha, dividing by the square root of the sum of the square of critical_thres and the square of alpha. If rand_value is less than peer_influence_prob, the function returns True, otherwise False.
+max_peer_influence_prob
+
+
+
+```{python}
+features_log = pd.DataFrame(features, columns=[
+        'timestep', 'avg. node degree', 'avg. local clustering coefficent',
+        'avg. weight', '# created links', '# reinforced links'
+    ])
+
+features_log['fraction created links'] = features_log['# created links'] / (features_log['# created links'] + features_log['# reinforced links'])
+features_log['fraction reinforced links'] = 1.0 - features_log['fraction created links']
+
+features_log.plot(x='timestep', y='avg. local clustering coefficent');
+features_log.plot(x='timestep', y='avg. node degree');
+```
+
+```{python}
+print(gad.list_properties())
+
+weight_dist(g)
+weight_dist(gad)
+
+```
+
+```{python}
+
+pos = gt.sfdp_layout(gad, eweight=gad.edge_properties["weight"])
+
+gt.graph_draw(gad, pos=pos)
+```
+
+```{python}
+gad_l = gt.extract_largest_component(gad, directed=False, prune=True)
+pos = gt.sfdp_layout(gad_l, eweight=gad_l.edge_properties["weight"])
+gt.graph_draw(gad_l, pos=pos)
+```
+
+
+```{python}
+alpha_smoothing = 0.3
+edge_colors = gad.new_edge_property('vector<double>')
+max_weight = max(gad.ep.weight)
+for edge in gad.edges():
+    alpha = min((gad.ep.weight[edge] / max_weight) + alpha_smoothing, 1.0)
+    edge_colors[edge] = [0.0, 0.0, 0.0, alpha]
+
+gt.graph_draw(gad, edge_color=edge_colors, inline=True, output_size=(600, 600));
+```
+
 ## Other stuff (i.e. I don't know what I'm doing)
 
 ### Local clustering
 
+The clustering coefficient captures the degree to which the neighbors of a given node link to each other. In summary _Ci_ measures the network’s local link density: The more densely interconnected the neighborhood of node _i_, the higher is its local clustering coefficient.
+
 ```{python}
 g.vertex_properties["local_clustering"] = g.new_vertex_property("double")
 
-gt.local_clustering(g, prop=g.vp["local_clustering"], undirected=False)
+gt.local_clustering(g, weight=g.ep["weight"], prop=g.vp["local_clustering"], undirected=True)
 
+dic = {i: g.vp["local_clustering"][i] for i in range(len(list(g.vp["local_clustering"])))}
+avg = sum(dic.values()) / len(dic.values())
+dic = {key: val for key, val in (sorted(dic.items(), key=lambda x: x[1], reverse=True)[:20])}
+
+# map names to ids
+dic = {id_usernames[k]: v for k, v in dic.items()}
+
+# prepare table
+score_name = "local clustering coefficients"
+df_ = pd.DataFrame(dic.items(), columns=["Username", score_name])
+df_["(normalised)"] = (df_[score_name] / df_[score_name].max()).round(2)
+df_ = df_.round(5)
+df_.index = np.arange(1, len(df_) + 1)
+
+print(df_)
+
+plot_bar(x=list(dic.keys()), y=dic.values(), horizontal=True,
+    title=f"Top 20 users by {score_name}",
+    xtick=None, rotation=90,
+    xlabel="Username", ylabel="Count")
+;
+
+print(f"\nAverage local clustering coefficient: {avg}\n")
 ```
-
-Comments: how do I use this?
 
 ### Pseudo-diameter
 
@@ -711,3 +922,9 @@ gt.graph_draw(g, vertex_fill_color=kcore, vertex_text=kcore)
 ```
 
 ## COMMENTS / ISSUES
+
+TO DO
+- Look at empirical degree distribution and compare to degree distribution of all models
+- Look at modularity values of communities and compare to that of all models
+- Try activity-driven model
+- What is the most important property of the network? E.g. communities
